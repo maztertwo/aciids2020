@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>New Project</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="../fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="../vendor/nouislider/nouislider.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="../css/Regis.css">
+</head>
+<body>
+
+    <div class="main">
+
+        <div class="container">
+            <div class="signup-content">
+                <div class="signup-img">
+                   
+                    <div class="signup-img-content">
+                        <h2 style="color: blue;">Your Project Information </h2>
+                       
+                    </div>
+                </div>
+                <div class="signup-form">
+                    <form method="POST" class="register-form" id="register-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <div class="form-input">
+                                    <label for="paper_id" class="required">Paper ID</label>
+                                    <input  type="text" name="paper_id" id="paper_id" />
+                                </div>
+                                <div class="form-input">
+                                    <label for="paper_title" class="required">Paper Title</label>
+                                    <input type="text" name="paper_title" id="paper_title" />
+                                </div>
+                                <div class="form-input">
+                                    <label for="paper_authors" class="required">Paper Authors</label>
+                                    <input type="text" name="paper_authors" id="paper_authors" />
+                                </div>
+                                <div class="form-input">
+                                    <label for="attendee_name" class="required">Title & Attendee Name</label>
+                                    <input type="text" name="attendee_name" id="attendee_name" />
+                                </div>
+                                <div class="form-input">
+                                    <label for="affiliation" class="required">Affiliation(for Bagde)</label>
+                                    <input type="text" name="affiliation" id="affiliation" />
+                                </div>
+                                <div class="form-input">
+                                    <label for="nationality" class="required">Nationality</label>
+                                    <input type="text" name="nationality" id="nationality" />
+                                </div>
+                                <div class="form-input">
+                                    <label for="country" class="required">Country</label>
+                                    <input type="text" name="country" id="country" />
+                                </div>
+                                <div class="form-input">
+                                    <label for="email" class="required">E-mail</label>
+                                    <input type="text" name="email" id="email" />
+                                </div>
+                                <div class="form-input">
+                                    <label for="phone" class="required">Phone</label>
+                                    <input type="text" name="phone" id="phone" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-select">
+                                    <div class="label-flex">
+                                        <label for="RegistrationFee">Registration Fee</label>
+                                    </div>
+                                    <div class="select-list">
+                                        <select name="RegistrationFee" id="RegistrationFee">
+                                            <option value="Author">Author: US$ 650（max 12 pages）</option>
+                                            <option value="Student">Student: 450 USD（max 12 pages）</option>
+                                            <option value="Non-Author">Non-Author: / Co-Author: US$ 600/person </option>   
+                                        </select>
+                                    </div>
+                                    <div class="label-flex">
+                                            <label for="RegistrationFee2">Extra Paper</label>
+                                        </div>
+                                        <div class="select-list">
+                                            <select name="RegistrationFee2" id="RegistrationFee2">
+                                                <option value="None">None</option>
+                                                <option value="two">Extra paper (2nd and next paper of the same author):  US$ 600 /paper </option>
+                                                <option value="size">Extra Pages (the size limit for one paper is 12 pages): US$ 100/page </option>   
+                                            </select>
+                                        </div>
+                                </div>
+                                <div class="form-radio">
+                                    <div class="label-flex">
+                                        <label for="payment">Extra Ticket</label>  
+                                    </div>
+                                    <div class="form-radio-group">            
+                                        <div class="form-radio-item">
+                                            <input type="radio" name="payment" id="cash" checked>
+                                            <label for="cash">Extra Ticket for Banquet :  US$ 50/person </label>
+                                            <span class="check"></span>
+                                        </div>
+                                        <div class="form-radio-item">
+                                            <input type="radio" name="payment" id="cheque">
+                                            <label for="cheque">None</label>
+                                            <span class="check"></span>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                                <div class="form-input">
+                                    <label for="University">University Name or Organization Name</label>
+                                    <input type="text" name="University" id="University" />
+                                </div>
+                                <div class="form-input">
+                                    <label for="address">Address</label>
+                                    <input type="text" name="address" id="address" />
+                                </div>
+                                <div class="form-input">
+                                    <label for="VAT">VAT ID (Tax Code)</label>
+                                    <input type="text" name="VAT" id="VAT" />
+                                </div>
+                                <div class="form-radio">
+                                        <div class="label-flex">
+                                            <label for="take">DO YOU TAKE PART IN THE EXCURSION ON THURSDAY, APRIL 11, 2019 ?</label>  
+                                        </div>
+                                        <div class="form-radio-group">            
+                                            <div class="form-radio-item">
+                                                <input type="radio" name="take" id="y" checked>
+                                                <label for="y">Yes </label>
+                                                <span class="check"></span>
+                                            </div>
+                                            <div class="form-radio-item">
+                                                <input type="radio" name="take" id="n">
+                                                <label for="n">No</label>
+                                                <span class="check"></span>
+                                            </div>
+                                           
+                                        </div>
+                                 </div>
+                                <div class="form-radio">
+                                        <div class="label-flex">
+                                            <label for="gender">gender</label>  
+                                        </div>
+                                        <div class="form-radio-group">            
+                                            <div class="form-radio-item">
+                                                <input type="radio" name="gender" id="ma" checked>
+                                                <label for="ma">Male </label>
+                                                <span class="check"></span>
+                                            </div>
+                                            <div class="form-radio-item">
+                                                <input type="radio" name="gender" id="f">
+                                                <label for="f">Female</label>
+                                                <span class="check"></span>
+                                            </div>
+                                           
+                                        </div>
+                                 </div>
+                                 <div class="form-radio">
+                                        <div class="label-flex">
+                                            <label for="size">shirt size</label>  
+                                        </div>
+                                        <div class="form-radio-group">            
+                                            <div class="form-radio-item">
+                                                <input type="radio" name="size" id="s" checked>
+                                                <label for="s">S </label>
+                                                <span class="check"></span>
+                                            </div>
+                                            <div class="form-radio-item">
+                                                <input type="radio" name="size" id="m">
+                                                <label for="m">M</label>
+                                                <span class="check"></span>
+                                            </div>
+                                            <div class="form-radio-item">
+                                                    <input type="radio" name="size" id="l">
+                                                    <label for="l">L</label>
+                                                    <span class="check"></span>
+                                            </div>
+                                            <div class="form-radio-item">
+                                                    <input type="radio" name="size" id="xl">
+                                                    <label for="xl">XL</label>
+                                                    <span class="check"></span>
+                                            </div>
+                                            <div class="form-radio-item">
+                                                    <input type="radio" name="size" id="xxl">
+                                                    <label for="xxl">XXL</label>
+                                                    <span class="check"></span>
+                                            </div>
+                                                
+                                           
+                                        </div>
+                                 </div>
+
+                            </div>
+                        </div>
+                      
+                        <div class="form-submit">
+                            <input type="submit" value="Submit" class="submit" id="submit" name="submit" />
+                            <input type="submit" value="Reset" class="submit" id="reset" name="reset" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JS -->
+    <script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="../vendor/nouislider/nouislider.min.js"></script>
+    <script src="../vendor/wnumb/wNumb.js"></script>
+    <script src="../vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="../vendor/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="../js/Regis.js"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>

@@ -1,6 +1,7 @@
 var app = require('express')();
 var http = require('http');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 var port = process.env.PORT || 8080
 
 app.use(bodyParser.json());
@@ -9,7 +10,17 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/', function(req , res){
-    res.send('<h1>Welcome to ACIIDS2020 </h1>');
+    res.writeHead(200,{'Content-Type':'text/html'});
+    fs.readFile('./CODE/html/LoginPage.html',null, function(err,data){
+        if(err){
+            res.writeHead(404);
+            res.write("File not found");
+        }
+        else{
+            res.write(data);
+        }
+        res.end();
+    });
 });
 
 app.get('/index', function(req,res){

@@ -309,15 +309,29 @@ input {
     width: auto;
     display: inline-block; }
 
+.form-checkbox {
+  margin-bottom: 18px; }
+  .form-checkbox input {
+    width: auto;
+    display: inline-block; }    
+
 .radio-label {
+  padding-right: 72px; }
+
+.checkbox-label {
   padding-right: 72px; }
 
 .form-radio-group {
   padding-bottom: 10px;
   padding-top: 12px; }
 
+.form-checkbox-group {
+  padding-bottom: 10px;
+  padding-top: 12px; }
+
 .form-radio-item {
   position: relative;
+ 
   margin-right: 30px; }
   .form-radio-item label {
     font-weight: 500;
@@ -327,6 +341,20 @@ input {
     display: block;
     cursor: pointer;
     text-transform: none; }
+
+.form-checkbox-item {
+  position: relative;
+  padding-bottom: 20px;
+  margin-right: 30px; }
+  .form-checkbox-item label {
+    font-weight: 500;
+    padding-left: 30px;
+    position: relative;
+    z-index: 9;
+    display: block;
+    cursor: pointer;
+    text-transform: none; }
+    
 
 .check {
   display: inline-block;
@@ -367,6 +395,14 @@ input[type=radio] {
   input[type=radio]:checked ~ .check {
     border: 1px solid #331fe7; }
   input[type=radio]:checked ~ .check::before {
+    background: #331fe7; }
+
+input[type=checkbox] {
+  position: absolute;
+  visibility: hidden; }
+  input[type=checkbox]:checked ~ .check {
+    border: 1px solid #331fe7; }
+  input[type=checkbox]:checked ~ .check::before {
     background: #331fe7; }
 
 ul {

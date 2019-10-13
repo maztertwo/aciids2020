@@ -13,7 +13,7 @@ const app = express();
 
 //   database
 
-mongoose.connect(process.env.DATABASE,{
+mongoose.connect(process.env.MONGO_URL,{
     useNewUrlParser: true,
     useCreateIndex: true
 }).then(()=> {console.log("Database connected")});

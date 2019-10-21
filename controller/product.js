@@ -38,7 +38,6 @@ exports.create = (req, res) => {
         else if(!category){
             return res.status(400).json({error:"please insert category product"})
         }
-
         let product = new Product(fields)
 
         if(files.photo){

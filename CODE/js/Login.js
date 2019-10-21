@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-export default class Login extends Component {
+const e = React.createElement;
+export default class Login extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: "",
+      username: "",
       password: "",
       loginErrors: ""
     };
@@ -22,14 +23,14 @@ export default class Login extends Component {
   }
 
   handleSubmit(event) {
-    const { email, password } = this.state;
+    const { username, password } = this.state;
 
     axios
       .post(
-        "http://localhost:3001/sessions",
+        "http://localhost:8080/api/signin",
         {
           user: {
-            email: email,
+            username: username,
             password: password
           }
         },
@@ -45,32 +46,69 @@ export default class Login extends Component {
       });
     event.preventDefault();
   }
-
+ 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={this.state.email}
-            onChange={this.handleChange}
-            required
-          />
+      <div class="wrap-login100 p-l-110 p-r-110 p-t-62 p-b-33">
+      <form class="login100-form validate-form flex-sb flex-w" onSubmit={this.handleSubmit}>
+        <img src="../images/aciids2020.jpg" style="margin-left: 140px; margin-bottom: 20px;" />
+        <span class="login100-form-title p-b-53">
+          Sign In With
+        </span>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={this.state.password}
-            onChange={this.handleChange}
-            required
-          />
+        <a href="#" class="btn-face m-b-20">
+          <i class="fa fa-facebook-official"></i>
+          Facebook
+        </a>
 
-          <button type="submit">Login</button>
-        </form>
-      </div>
+        <a href="#" class="btn-google m-b-20">
+          <img src="../images/icons/icon-google.png" alt="GOOGLE"/>
+          Google
+        </a>
+        
+        <div class="p-t-31 p-b-9">
+          <span class="txt1">
+            Username
+          </span>
+        </div>
+        <div class="wrap-input100 validate-input" data-validate = "Username is required">
+          <input class="input100" type="email" name="username" onChange={this.handleChange}  />
+          <span class="focus-input100"></span>
+        </div>
+        
+        <div class="p-t-13 p-b-9">
+          <span class="txt1">
+            Password
+          </span>
+
+          <a href="#" class="txt2 bo1 m-l-5">
+            Forgot?
+          </a>
+        </div>
+        <div class="wrap-input100 validate-input" data-validate = "Password is required">
+          <input class="input100" type="password" name="password" onChange={this.handleChange}   />
+          <span class="focus-input100"></span>
+        </div>
+
+        <div class="container-login100-form-btn m-t-17">
+          <button class="login100-form-btn">
+            Sign In
+          </button>
+        </div>
+
+        <div class="w-full text-center p-t-55">
+          <span class="txt2">
+            Not a member?
+          </span>
+
+          <a href="#" class="txt2 bo1">
+            Sign up now
+          </a>
+        </div>
+      </form>
+    </div>
     );
   }
 }
+const domContainer = document.querySelector('#LoginPage');
+ReactDOM.render(e(Login),domContainer);

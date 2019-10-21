@@ -553,8 +553,8 @@ li.init {
   color: #999;
   border: 2px solid #ebebeb; }
   #reset:hover {
-    border: 2px solid #331fe7;
-    background: #331fe7;
+    border: 2px solid #e71f1f;
+    background: #e71f1f;
     color: #fff; }
 
 #submit {

@@ -10,7 +10,7 @@ router.get('/secret/:userID',requireSignin,isAuth,(req,res)=>{
     });
 });
 
-router.get('/user/:userID',requireSignin,isAuth, read)
+router.get('/user/:userID', read)
 router.put('/user/:userID',requireSignin,isAuth, update)
 
 router.param('userID', userById);

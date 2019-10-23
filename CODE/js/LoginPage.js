@@ -9,21 +9,22 @@
 
     $('.validate-form').on('submit',function(){
         var check = true;
-
+    
         for(var i=0; i<input.length; i++) {
             if(validate(input[i]) == false){
                 showValidate(input[i]);
                 check=false;
             }
         }
-
+        
         return check;
     });
 
 
     $('.validate-form .input100').each(function(){
-        $(this).focus(function(){
+        $(this).focus(function(){ 
            hideValidate(this);
+           
         });
     });
 
@@ -52,6 +53,30 @@
         $(thisAlert).removeClass('alert-validate');
     }
     
+   
     
 
 })(jQuery);
+
+
+
+// function UserAction() {
+//     var xhttp = new XMLHttpRequest();
+//     var email = document.getElementById("#email");
+//     var inputData = encodeURIComponent(email.value);
+//     var password = document.getElementById("#password");
+//     var url = "https://jsonplaceholder.typicode.com/users";
+//     xhttp.open("GET",url+"?email="+email, true);
+//     xhttp.setRequestHeader("Content-type", "application/json");
+//     xhttp.send("Your JSON Data Here");
+   
+//     xhttp.onreadystatechange = function() {
+//          if (this.readyState == 4 && this.status == 200) {
+//              alert(this.responseText);
+//          }
+        
+//     };
+    
+    
+//   }
+

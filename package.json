@@ -1,0 +1,36 @@
+{
+  "name": "PS-api",
+  "version": "1.0.0",
+  "description": "PaymeSYS backend developed",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "api",
+    "backend",
+    "swagger"
+  ],
+  "author": "Thanatcha Sangphet",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "express": "^4.16.2",
+    "formidable": "^1.2.1",
+    "fs": "0.0.1-security",
+    "hapi": "^16.1.0",
+    "hapi-swagger": "^7.7.0",
+    "http": "^0.0.0",
+    "inert": "^4.2.0",
+    "joi": "^10.6.0",
+    "mysql": "^2.15.0",
+    "nodemailer": "^4.4.2",
+    "otp-generator": "^1.1.0",
+    "pack": "^1.2.0",
+    "part": "^0.1.1",
+    "path": "^0.12.7",
+    "url": "^0.11.0",
+    "vision": "^4.1.1"
+  }
+}

@@ -97,7 +97,7 @@ router.post("/user/resgister", (req, res, next) => {
   var invoicePostcode = req.body.invoicePostcode
   var reserveBanquet = req.body.reserveBanquet
   var reserveTour = req.body.reserveTour
-  var test = [,title,firstName,middleName,lastName,email,ParticipationType,RegistrationType,numberPapers,affiliation,address1,address2,city,state,country,postcode,phone,fax,invoiceName,invoiceVatID,invoiceAddress1,invoiceAddress2,invoiceCity,invoiceState,invoiceCountry,invoicePostcode,reserveBanquet,reserveTour,time];
+  var test = [,title,firstName,middleName,lastName,email,role,ParticipationType,RegistrationType,numberPapers,affiliation,address1,address2,city,state,country,postcode,phone,fax,invoiceName,invoiceVatID,invoiceAddress1,invoiceAddress2,invoiceCity,invoiceState,invoiceCountry,invoicePostcode,reserveBanquet,reserveTour,time];
   var data = [];
   data.push(test);
   // var meemix = "aaa.@aaaa.com" << TEST BLANK SELECT FROM DATABASE

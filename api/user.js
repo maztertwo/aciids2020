@@ -39,7 +39,7 @@ router.post("/database", (req, res, next) => {
 });
 
 router.post("/table", (req, res, next) => {
-  var sql = 'CREATE TABLE user (userID int NOT NULL AUTO_INCREMENT,Title VARCHAR(255),Firstname VARCHAR(255),Midname VARCHAR(255),Lastname VARCHAR(255),Email VARCHAR(255),paticipateType int,regisType int,numberPaper int,Affiliation VARCHAR(255),Address1 VARCHAR(255),Address2 VARCHAR(255),City VARCHAR(255),State VARCHAR(255),Country VARCHAR(255),Postcode VARCHAR(255),phoneNumber VARCHAR(255),Fax VARCHAR(255),InvoiceName VARCHAR(255),vatID VARCHAR(255),InvoiceAdd1 VARCHAR(255),InvoiceAdd2 VARCHAR(255),InvoiceCity VARCHAR(255),InvoiceState VARCHAR(255), InvoiceCountry VARCHAR(255),InvoiceZIP VARCHAR(255),addDinner int,addExcursion int,regisDate DATETIME NOT NULL,PRIMARY KEY (userID))';
+  var sql = 'CREATE TABLE user (userID int NOT NULL AUTO_INCREMENT,Title VARCHAR(255),Firstname VARCHAR(255),Midname VARCHAR(255),Lastname VARCHAR(255),Email VARCHAR(255),role VARCHAR(255),paticipateType int,regisType int,numberPaper int,Affiliation VARCHAR(255),Address1 VARCHAR(255),Address2 VARCHAR(255),City VARCHAR(255),State VARCHAR(255),Country VARCHAR(255),Postcode VARCHAR(255),phoneNumber VARCHAR(255),Fax VARCHAR(255),InvoiceName VARCHAR(255),vatID VARCHAR(255),InvoiceAdd1 VARCHAR(255),InvoiceAdd2 VARCHAR(255),InvoiceCity VARCHAR(255),InvoiceState VARCHAR(255), InvoiceCountry VARCHAR(255),InvoiceZIP VARCHAR(255),addDinner int,addExcursion int,regisDate DATETIME NOT NULL,PRIMARY KEY (userID))';
   con.query(sql, function(err, result) {
     if (err) throw err;
     console.log("Table created");
@@ -67,6 +67,7 @@ router.post("/insert", (req, res, next) => {
 });
 
 router.post("/user/resgister", (req, res, next) => {
+  var role = 'attendee'
   const time = new Date()
   var email = req.body.email;
   // var password = req.body.password;
@@ -166,6 +167,54 @@ router.get("/users", (req, res, next) => {
 //     })
 //     .catch(err => {
 //       res.send('error: ' + err)
+//     })
+// })
+
+router.post('/login', (req, res) => {
+  var email = req.body.email;
+  var password = req.body.password;
+  var emailCheck = "SELECT * FROM user WHERE email = ?";
+  con.query(emailCheck, [email], function (err, result) {
+    if(err) throw err;
+    else {
+      if(result != ""){
+        var emailDB = result[0].Email;
+        var passwordDB = result[0].phoneNumber;
+        if(password == passwordDB){
+          console.log("Login Successfully ♥ By:",emailDB)
+          // console.log("Data in result:",result[0].email);
+          res.status(200).json({data: result[0]});
+        }
+        else{
+          console.log(emailDB,"insert Wrong password")
+          res.status(401).send("Wrong Password Bitch !!!");
+        }
+      }
+      else{
+        res.status(401).send("Wrong EMAIL Cyka Blyte !!!");
+      }
+    }
+  })
+});
+//   User.findOne({
+//     where: {
+//       email: req.body.email
+//     }
+//   })
+//     .then(user => {
+//       if (user) {
+//         if (bcrypt.compareSync(req.body.password, user.password)) {
+//           let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
+//             expiresIn: 1440
+//           })
+//           res.send(token)
+//         }
+//       } else {
+//         res.status(400).json({ error: 'User does not exist' })
+//       }
+//     })
+//     .catch(err => {
+//       res.status(400).json({ error: err })
 //     })
 // })
 

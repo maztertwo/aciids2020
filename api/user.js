@@ -123,14 +123,22 @@ router.post("/user/resgister", (req, res, next) => {
   // console.log(data) test DATA
 });
 
-router.get("/users", (req, res, next) => {
-  var sql = "SELECT * FROM user";
-  con.query(sql, (err, result) => {
-    if (err) throw err;
+router.post("/users", (req, res, next) => {
+  var email = req.body.email;
+  var emailCheck = "SELECT * FROM user WHERE Email = ?";
+  con.query(emailCheck, [email], function (err, result) {
+    if(err) throw err;
     else {
-      return res.status(200).json({data :  result});
+      if(result != ""){
+          console.log("Get Data form: " + result[0].Email);
+          res.end(JSON.stringify(result));
+      }
+      else{
+        res.status(402).send("ERROR WRONG EMAIL FROM DATABASE");
+      }
     }
-  });
+    
+  })
 });
 
 // router.post('/register', (req, res) => {

@@ -141,6 +141,36 @@ router.post("/users", (req, res, next) => {
   })
 });
 
+router.post("/users/update", (req, res, next) => {
+  var email = req.body.email;
+  var firstName = req.body.firstName
+  var middleName = req.body.middleName
+  var lastName = req.body.lastName
+  var title = req.body.title
+  var affiliation = req.body.affiliation
+  var address1 = req.body.address1
+  var address2 = req.body.address2
+  var city = req.body.city
+  var state = req.body.state
+  var country = req.body.country
+  var postcode = req.body.postcode
+  var phone = req.body.phone
+  var fax = req.body.fax
+  var emailCheck = "UPDATE user SET Firstname= ?,Lastname= ?,Midname= ?,Title= ?,Affiliation= ?,Address1=?,Address2=?,City=?,State=?,Country=?,Postcode=?,phoneNumber=?,Fax=? WHERE Email= ?";
+  con.query(emailCheck, [firstName,lastName,middleName,title,affiliation,address1,address2,city,state,country,postcode,phone,fax,email], function (err, result) {
+    if(err) throw err;
+    else {
+      if(result != ""){
+          console.log(result.affectedRows + " record(s) updated");
+          res.end(JSON.stringify(result));
+      }
+      else{
+        res.status(402).send("ERROR : Can't Update to DATABASE");
+      }
+    }
+    
+  })
+});
 // router.post('/register', (req, res) => {
 //   const today = new Date()
 //   const userData = {

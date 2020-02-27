@@ -41,7 +41,7 @@ router.post("/database", (req, res, next) => {
   });
   
   router.post("/conname", (req, res, next) => {
-    var sql = 'CREATE TABLE conferrence (conferrenceID int NOT NULL AUTO_INCREMENT,conferrenceName VARCHAR(255),createBy VARCHAR(255),createDate DATETIME NOT NULL,PRIMARY KEY (conferrenceID))';
+    var sql = 'CREATE TABLE conferrence (conferrenceID int NOT NULL AUTO_INCREMENT,conferrenceName VARCHAR(255),createBy VARCHAR(255),createDate DATE NOT NULL,startDate DATE NOT NULL,finishDate DATE NOT NULL,earlyDeadline DATE,paymentDeadline DATE,earlyRegis int,memberEarly int,regularLate int,memberLate int,studentLate int,visitor int,exDinner int,additionTicket int,PRIMARY KEY (conferrenceID))';
     con.query(sql, function(err, result) {
       if (err) throw err;
       console.log("Table 'conferrence' created");

@@ -8,7 +8,6 @@ var session = require("express-session");
 var bodyParser = require("body-parser");
 var path = require("path");
 router.use(cors())
-
 // const User = require('../models/user')
 process.env.SECRET_KEY = 'secret'
 
@@ -31,30 +30,6 @@ router.get("/", (req, res, next) => {
   });
 });
 
-router.post("/database", (req, res, next) => {
-  con.query("CREATE DATABASE mydb", function(err, result) {
-    if (err) throw err;
-    console.log("Database created");
-  });
-});
-
-router.post("/table", (req, res, next) => {
-  var sql = 'CREATE TABLE user (userID int NOT NULL AUTO_INCREMENT,Title VARCHAR(255),Firstname VARCHAR(255),Midname VARCHAR(255),Lastname VARCHAR(255),Email VARCHAR(255),role VARCHAR(255),paticipateType int,regisType int,numberPaper int,Affiliation VARCHAR(255),Address1 VARCHAR(255),Address2 VARCHAR(255),City VARCHAR(255),State VARCHAR(255),Country VARCHAR(255),Postcode VARCHAR(255),phoneNumber VARCHAR(255),Fax VARCHAR(255),InvoiceName VARCHAR(255),vatID VARCHAR(255),InvoiceAdd1 VARCHAR(255),InvoiceAdd2 VARCHAR(255),InvoiceCity VARCHAR(255),InvoiceState VARCHAR(255), InvoiceCountry VARCHAR(255),InvoiceZIP VARCHAR(255),addDinner int,addExcursion int,regisDate DATETIME NOT NULL,PRIMARY KEY (userID))';
-  con.query(sql, function(err, result) {
-    if (err) throw err;
-    console.log("Table created");
-    res.send("Table created");
-  });
-});
-
-router.post("/table2", (req, res, next) => {
-  var sql = 'CREATE TABLE userTests (id INT NOT NULL AUTO_INCREMENT,first_name VARCHAR(255),last_name VARCHAR(255),email VARCHAR(255),password VARCHAR(255),created DATETIME,PRIMARY KEY (id))';
-  con.query(sql, function(err, result) {
-    if (err) throw err;
-    console.log("Table created");
-    res.send("Table created");
-  });
-});
 
 router.post("/insert", (req, res, next) => {
   var data = [["John", "Highway 47"]];
@@ -141,7 +116,7 @@ router.post("/users", (req, res, next) => {
   })
 });
 router.get('/data',(req, res)=>{
-  var data= "SELECT * FROM user;"
+  var data= "SELECT * FROM user WHERE role='attendee';"
   con.query(data ,function (err, result){
     if(err) throw err;
     else{
@@ -274,10 +249,59 @@ router.post('/login', (req, res) => {
 //     })
 // })
 
-router.get("/hello", (req, res, next) => {
-  res.status(200).json({
-    message: "Hello Meemix Gu mai wai law TAT "
-  });
+router.post("/conferrence", (req, res, next) => {
+  const time = new Date()
+  var email = req.body.email;
+  var conferrenceName = req.body.conferrenceName
+  var test = [,conferrenceName,email,time];
+  var data = [];
+  data.push(test);
+  // var meemix = "aaa.@aaaa.com" << TEST BLANK SELECT FROM DATABASE
+  var sql = "INSERT INTO conferrence VALUES ?";
+  var priorityCheck = "SELECT * FROM user WHERE role = 'organizer' AND Email= ?";
+  con.query(priorityCheck, [email], function (err, result) {
+    if(err) throw err;
+    else {
+      if(result != ""){
+        con.query(sql, [data], function(err, result) {
+          if (err) throw err;
+          console.log("Number of conferrence inserted: " + result.affectedRows);
+          res.status(200).send("Number of conferrence inserted: " + result.affectedRows);
+        });
+      }
+      else{
+        res.status(400).send("No Permission");
+      }
+    }
+  })
+});
+
+router.post("/item", (req, res, next) => {
+  var email = req.body.email;
+  var itemName = req.body.itemName;
+  var Price = req.body.Price;
+  var conferrenceID = req.body.conferrenceID
+  var test = [,conferrenceID,itemName,Price];
+  var data = [];
+  data.push(test);
+  // var meemix = "aaa.@aaaa.com" << TEST BLANK SELECT FROM DATABASE
+  var sql = "INSERT INTO itemconfer VALUES ?";
+  var priorityCheck = "SELECT * FROM user WHERE role = 'organizer' AND Email= ?";
+  con.query(priorityCheck, [email], function (err, result) {
+    if(err) throw err;
+    else {
+      if(result != ""){
+        con.query(sql, [data], function(err, result) {
+          if (err) throw err;
+          console.log("Number of items inserted: " + result.affectedRows);
+          res.status(200).send("Number of items inserted: " + result.affectedRows);
+        });
+      }
+      else{
+        res.status(500).send("No Permission");
+      }
+    }
+  })
 });
 
 module.exports = router;

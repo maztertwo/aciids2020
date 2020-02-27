@@ -3,7 +3,8 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const User = require('./api/user')
+const User = require('./api/user');
+const createTable = require('./api/createTable');
 
 app.use(morgan('dev'));
 app.use(cors())
@@ -23,6 +24,7 @@ app.use((req,res,next)=> {
 });
 
 app.use('/', User);
+app.use('/sql',createTable)
 
 app.use((req,res,next)=> {
     const error = new Error('Not Found');

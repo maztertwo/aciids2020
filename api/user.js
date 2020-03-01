@@ -45,7 +45,7 @@ router.post("/user/resgister", (req, res, next) => {
   var role = 'attendee'
   const time = new Date()
   var email = req.body.email;
-  // var password = req.body.password;
+  var password = req.body.password;
   var firstName = req.body.firstName
   var middleName = req.body.middleName
   var lastName = req.body.lastName
@@ -72,7 +72,13 @@ router.post("/user/resgister", (req, res, next) => {
   var invoicePostcode = req.body.invoicePostcode
   var reserveBanquet = req.body.reserveBanquet
   var reserveTour = req.body.reserveTour
-  var test = [,title,firstName,middleName,lastName,email,role,ParticipationType,RegistrationType,numberPapers,affiliation,address1,address2,city,state,country,postcode,phone,fax,invoiceName,invoiceVatID,invoiceAddress1,invoiceAddress2,invoiceCity,invoiceState,invoiceCountry,invoicePostcode,reserveBanquet,reserveTour,time];
+  // bcrypt.hash(oldpass, 10, (err, hash) => {
+  //   const password = hash;
+  //   console.log("Password",oldpass,"Encrpy",hash);
+  //   var test = [,title,firstName,middleName,lastName,email,password,role,ParticipationType,RegistrationType,numberPapers,affiliation,address1,address2,city,state,country,postcode,phone,fax,invoiceName,invoiceVatID,invoiceAddress1,invoiceAddress2,invoiceCity,invoiceState,invoiceCountry,invoicePostcode,reserveBanquet,reserveTour,time];
+    
+  // });
+  var test = [,title,firstName,middleName,lastName,email,password,role,ParticipationType,RegistrationType,numberPapers,affiliation,address1,address2,city,state,country,postcode,phone,fax,invoiceName,invoiceVatID,invoiceAddress1,invoiceAddress2,invoiceCity,invoiceState,invoiceCountry,invoicePostcode,reserveBanquet,reserveTour,time];
   var data = [];
   data.push(test);
   // var meemix = "aaa.@aaaa.com" << TEST BLANK SELECT FROM DATABASE
@@ -268,6 +274,7 @@ router.post("/conferrence", (req, res, next) => {
   var test = [,conferrenceName,email,time,startDate,finishDate,earlyDeadline,paymentDeadline,earlyRegis,memberEarly,regularLate,memberLate,studentLate,visitor,exDinner,additionTicket];
   var data = [];
   data.push(test);
+  // console.log(test); << look what we GET !!! DUDE!!!!!!!!!!!!!!! FAK THIS 
   // var meemix = "aaa.@aaaa.com" << TEST BLANK SELECT FROM DATABASE
   var sql = "INSERT INTO conferrence VALUES ?";
   var priorityCheck = "SELECT * FROM user WHERE role = 'organizer' AND Email= ?";

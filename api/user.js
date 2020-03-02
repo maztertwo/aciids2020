@@ -112,6 +112,7 @@ router.post("/users", (req, res, next) => {
     }
   });
 });
+
 router.get("/data", (req, res) => {
   var data = "SELECT * FROM user WHERE role='attendee';";
   con.query(data, function(err, result) {
@@ -258,8 +259,8 @@ router.post("/login", (req, res) => {
     else {
       if (result != "") {
         var emailDB = result[0].Email;
-        var passwordDB = result[0].phoneNumber;
-        if (password == passwordDB) {
+        var passwordDB = result[0].password;
+        if (bcrypt.compareSync(password, passwordDB)) {
           console.log("Login Successfully ♥ By:", emailDB);
           // console.log("Data in result:",result[0].email);
           res.status(200).json({ data: result[0] });

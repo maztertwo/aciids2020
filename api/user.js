@@ -139,6 +139,46 @@ router.get('/data',(req, res)=>{
   })
 }
 );
+
+
+router.post("/data/conferrence", (req, res, next) => {
+  var ConferrenceName = req.body.ConferrenceName;
+  console.log("conferrenceName", ConferrenceName);
+  var conferrenceNameCheck = "SELECT * FROM conferrence WHERE conferrenceName = ?";
+  con.query(conferrenceNameCheck, [ConferrenceName], function (err, result) {
+    if(err) throw err;
+    else {
+      if(result != ""){
+          console.log("Get Data form: " + result[0].conferrenceName);
+          res.end(JSON.stringify(result));
+      }
+      else{
+        res.status(402).send("ERROR WRONG conferrenceName FROM DATABASE");
+      }
+    }
+    
+  })
+});
+
+router.get('/data/conferrence/name',(req, res)=>{
+  var data= "SELECT conferrenceName FROM conferrence ;"
+  con.query(data ,function (err, result){
+    if(err) throw err;
+    else{
+      if(result != ""){
+        console.log("request all data success")
+        res.end(JSON.stringify(result));
+        // res.status(200).json({data: result});
+      }
+      else{
+        console.log("fail to request all data ")
+        res.status(401);
+      }
+    }  
+  })
+}
+);
+
 router.post("/users/update", (req, res, next) => {
   var email = req.body.email;
   var firstName = req.body.firstName

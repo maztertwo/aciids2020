@@ -180,10 +180,19 @@ router.post("/users/update", (req, res, next) => {
   var postcode = req.body.postcode;
   var phone = req.body.phone;
   var fax = req.body.fax;
-  var emailCheck =
-    "UPDATE user SET Firstname= ?,Lastname= ?,Midname= ?,Title= ?,Affiliation= ?,Address1=?,Address2=?,City=?,State=?,Country=?,Postcode=?,phoneNumber=?,Fax=? WHERE Email= ?";
+  var invoiceName = req.body.invoiceName;
+  var invoiceVatID = req.body.invoiceVatID;
+  var invoiceAddress1 = req.body.invoiceAddress1;
+  var invoiceAddress2 = req.body.invoiceAddress2;
+  var invoiceCity = req.body.invoiceCity;
+  var invoiceState = req.body.invoiceState;
+  var invoiceCountry= req.body.invoiceCountry;
+  var invoicePostcode= req.body.invoicePostcode;
+
+  var UpdateUser =
+    "UPDATE user SET Firstname= ?,Lastname= ?,Midname= ?,Title= ?,Affiliation= ?,Address1=?,Address2=?,City=?,State=?,Country=?,Postcode=?,phoneNumber=?,Fax=?,InvoiceName=?,vatID=?,InvoiceAdd1=?,InvoiceAdd2=?,InvoiceCity=?,InvoiceState=?,InvoiceCountry=?,InvoiceZIP=? WHERE Email= ?";
   con.query(
-    emailCheck,
+    UpdateUser,
     [
       firstName,
       lastName,
@@ -198,7 +207,15 @@ router.post("/users/update", (req, res, next) => {
       postcode,
       phone,
       fax,
-      email
+      invoiceName,
+      invoiceVatID,
+      invoiceAddress1,
+      invoiceAddress2,
+      invoiceCity,
+      invoiceState,
+      invoiceCountry,
+      invoicePostcode,
+      email,
     ],
     function(err, result) {
       if (err) throw err;

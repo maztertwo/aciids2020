@@ -58,4 +58,13 @@ router.post("/database", (req, res, next) => {
     });
   });
 
+  router.post("/paymentinfo", (req, res, next) => {
+    var sql = 'CREATE TABLE paymentinfo (infoID int NOT NULL AUTO_INCREMENT,email VARCHAR(255),image VARCHAR(255),status VARCHAR(255),PRIMARY KEY (infoID))';
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+      console.log("Table 'paymentinfo' created");
+      res.send("Table 'paymentinfo' created");
+    });
+  });
+
 module.exports = router;

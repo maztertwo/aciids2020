@@ -3,10 +3,40 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
-var mysql = require("mysql");
-var session = require("express-session");
-var bodyParser = require("body-parser");
-var path = require("path");
+const multer = require("multer");
+const mysql = require("mysql");
+const session = require("express-session");
+const bodyParser = require("body-parser");
+const uuidv4 = require('uuid/v4');
+const path = require("path");
+const DIR = './public/';
+
+//------------------------------- FUNCTION UPLOAD IMAGE -------------------------------------------
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, DIR);
+  },
+  filename: (req, file, cb) => {
+      const fileName = file.originalname.toLowerCase().split(' ').join('-');
+      cb(null, uuidv4() + '-' + fileName)
+  }
+});
+
+var upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+      if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+          cb(null, true);
+      } else {
+          cb(null, false);
+          return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+      }
+  }
+});
+
+//------------------------------- FUNCTION UPLOAD IMAGE -------------------------------------------
+
 router.use(cors());
 // const User = require('../models/user')
 process.env.SECRET_KEY = "secret";
@@ -401,5 +431,29 @@ router.post("/item", (req, res, next) => {
     }
   });
 });
+
+router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
+  const url = req.protocol + '://' + req.get('host')
+    var email = req.body.email;
+    // var email = "meemix@gmail.com";
+    var profileImg = url + '/public/' + req.file.filename;
+    var status = "in Process";
+    var test = [
+      ,
+      email,
+      profileImg,
+      status,
+    ];
+    var data = [];
+    data.push(test);
+    var sql = "INSERT INTO paymentinfo VALUES ?";
+    con.query(sql, [data], function(err, result) {
+      if (err) throw err;
+      console.log("upload Image Complete: ");
+      res
+        .status(200)
+        .send("Number of items inserted: " + result.affectedRows);
+    });
+  })
 
 module.exports = router;

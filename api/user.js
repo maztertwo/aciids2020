@@ -9,6 +9,7 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const uuidv4 = require('uuid/v4');
 const path = require("path");
+const fs = require('fs');
 const DIR = './public/';
 
 //------------------------------- FUNCTION UPLOAD IMAGE -------------------------------------------
@@ -398,6 +399,8 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
     // var email = "meemix@gmail.com";
     var profileImg = url + '/public/' + req.file.filename;
     var status = "in Process";
+    console.log(req.file);
+    // var status = req.file;
     var test = [
       ,
       email,
@@ -416,4 +419,11 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
     });
   })
 
+  router.get('/public/:imagename', (req,res) =>{
+    const directory = "./public/"+req.params.imagename;
+    fs.readFile(directory, function(err, data) {
+      if (err) throw err;
+      res.end(data);
+  })
+});
 module.exports = router;

@@ -399,6 +399,9 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
     // var email = "meemix@gmail.com";
     var profileImg = url + '/public/' + req.file.filename;
     var status = "in Process";
+    var payment_Date = req.body.payment_Date;
+    var payment_Time = req.body.payment_Time;
+    var payment_Amount = req.body.payment_Amount;
     console.log(req.file);
     // var status = req.file;
     var test = [
@@ -406,6 +409,9 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
       email,
       profileImg,
       status,
+      payment_Date,
+      payment_Time,
+      payment_Amount
     ];
     var data = [];
     data.push(test);

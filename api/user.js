@@ -144,6 +144,22 @@ router.post("/users", (req, res, next) => {
   });
 });
 
+router.post("/paymentinfo", (req, res, next) => {
+  var email = req.body.email;
+  var emailCheck = "SELECT * FROM paymentinfo WHERE email = ?";
+  con.query(emailCheck, [email], function(err, result) {
+    if (err) throw err;
+    else {
+      if (result != "") {
+        console.log("Get Data form: " + result[0].email);
+        res.end(JSON.stringify(result));
+      } else {
+        res.status(402).send("ERROR WRONG EMAIL FROM DATABASE");
+      }
+    }
+  });
+});
+
 router.get("/data", (req, res) => {
   var data = "SELECT * FROM user WHERE role='attendee';";
   con.query(data, function(err, result) {

@@ -277,7 +277,32 @@ router.post("/users/update", (req, res, next) => {
     }
   );
 });
+router.post("/paymentinfo/update", (req, res, next) => {
+  var Email = req.body.Email;
+  var Status = req.body.Status;
+  
 
+  var UpdateStatus =
+    "UPDATE paymentinfo SET status='Complete' WHERE Email= ?";
+  con.query(
+    UpdateStatus,
+    [
+      Email,
+      Status,
+    ],
+    function(err, result) {
+      if (err) throw err;
+      else {
+        if (result != "") {
+          console.log(result.affectedRows + " Status updated");
+          res.end(JSON.stringify(result));
+        } else {
+          res.status(402).send("ERROR : Can't Update to DATABASE");
+        }
+      }
+    }
+  );
+});
 
 router.post("/login", (req, res) => {
   var email = req.body.email;

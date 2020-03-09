@@ -71,6 +71,11 @@ router.post("/insert", (req, res, next) => {
 });
 
 router.post("/user/resgister", (req, res, next) => {
+  var profileImg = "";
+  var status = "in Process";
+  var payment_Date = "";
+  var payment_Time = "";
+  var payment_Amount = "";
   var role = "attendee";
   const time = new Date();
   var email = req.body.email;
@@ -106,8 +111,22 @@ router.post("/user/resgister", (req, res, next) => {
   var test = [,title,firstName,middleName,lastName,email,hash,role,ParticipationType,RegistrationType,numberPapers,affiliation,address1,address2,city,state,country,postcode,phone,fax,invoiceName,invoiceVatID,invoiceAddress1,invoiceAddress2,invoiceCity,invoiceState,invoiceCountry,invoicePostcode,reserveBanquet,reserveTour,time];
   var data = [];
   data.push(test);
+
+  var test2 = [
+    ,
+    email,
+    profileImg,
+    status,
+    payment_Date,
+    payment_Time,
+    payment_Amount
+  ];
+  var data2 = [];
+  data2.push(test2);
+
   // var meemix = "aaa.@aaaa.com" << TEST BLANK SELECT FROM DATABASE
   var sql = "INSERT INTO user VALUES ?";
+  var sql2 = "INSERT INTO paymentinfo VALUES ?";
   var emailCheck = "SELECT * FROM user WHERE email = ?";
   con.query(emailCheck, [email], function (err, result) {
     if(err) throw err;
@@ -115,6 +134,10 @@ router.post("/user/resgister", (req, res, next) => {
       if(result == ""){
         con.query(sql, [data], function(err, result) {
           if (err) throw err;
+          con.query(sql2, [data2], function(err, result) {
+            if (err) throw err;
+            console.log("Insert payment Info complete");
+          });
           console.log("Number of records inserted: " + result.affectedRows);
           res.status(200).send("Number of records inserted: " + result.affectedRows);
         });
@@ -124,6 +147,7 @@ router.post("/user/resgister", (req, res, next) => {
       }
     }
   })
+
   // res.send(data)
   // console.log(data) test DATA
 });
@@ -437,14 +461,12 @@ router.get('/user-profile', (req, res) => {
 router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
   const url = req.protocol + '://' + req.get('host')
     var email = req.body.email;
-    // var email = "meemix@gmail.com";
     var profileImg = url + '/public/' + req.file.filename;
     var status = "in Process";
     var payment_Date = req.body.payment_Date;
     var payment_Time = req.body.payment_Time;
     var payment_Amount = req.body.payment_Amount;
     console.log(req.file);
-    // var status = req.file;
     var test = [
       ,
       email,
@@ -472,5 +494,22 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
       if (err) throw err;
       res.end(data);
   })
+});
+
+router.get("/userDatatest", (req, res) => {
+  var data = "SELECT paymentinfo.status,user.Title,user.Firstname,user.Lastname,user.Email,user.phoneNumber FROM user INNER JOIN paymentinfo ON paymentinfo.email=user.Email";
+  con.query(data, function(err, result) {
+    if (err) throw err;
+    else {
+      if (result != "") {
+        console.log("request all data success");
+        res.end(JSON.stringify(result));
+        // res.status(200).json({data: result});
+      } else {
+        console.log("fail to request all data ");
+        res.status(401);
+      }
+    }
+  });
 });
 module.exports = router;

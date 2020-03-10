@@ -467,25 +467,40 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
     var payment_Time = req.body.payment_Time;
     var payment_Amount = req.body.payment_Amount;
     console.log(req.file);
-    var test = [
-      ,
-      email,
+    // var data = [];
+    // data.push(test);
+    // var sql = "UPDATE paymentinfo SET VALUES ? WHERE email= ?";
+    // con.query(sql, [data], function(err, result) {
+    //   if (err) throw err;
+    //   console.log("upload Image Complete: ");
+    //   res
+    //     .status(200)
+    //     .send("Number of items inserted: " + result.affectedRows);
+    // });
+    var UpdateUser =
+    "UPDATE paymentinfo SET image=?,status=?,PayDate=?,PayTime=?,PayAmount=? WHERE email= ?";
+  con.query(
+    UpdateUser,
+    [
       profileImg,
       status,
       payment_Date,
       payment_Time,
-      payment_Amount
-    ];
-    var data = [];
-    data.push(test);
-    var sql = "INSERT INTO paymentinfo VALUES ?";
-    con.query(sql, [data], function(err, result) {
+      payment_Amount,
+      email,
+    ],
+    function(err, result) {
       if (err) throw err;
-      console.log("upload Image Complete: ");
-      res
-        .status(200)
-        .send("Number of items inserted: " + result.affectedRows);
-    });
+      else {
+        if (result != "") {
+          console.log(result.affectedRows + " record(s) updated");
+          res.end(JSON.stringify(result));
+        } else {
+          res.status(402).send("ERROR : Can't Update to DATABASE");
+        }
+      }
+    }
+  );
   })
 
   router.get('/public/:imagename', (req,res) =>{

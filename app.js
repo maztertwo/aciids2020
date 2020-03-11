@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const User = require('./api/user');
 const createTable = require('./api/createTable');
+const memberCon = require('./api/memberConference');
 
 app.use(morgan('dev'));
 app.use(cors())
@@ -25,6 +26,7 @@ app.use((req,res,next)=> {
 
 app.use('/', User);
 app.use('/sql',createTable)
+app.use('/memberconference',memberCon)
 
 app.use((req,res,next)=> {
     const error = new Error('Not Found');

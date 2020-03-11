@@ -591,4 +591,17 @@ router.post("/conferrence/update", (req, res, next) => {
     }
   );
 });
+
+router.post("/userDataConference", (req, res) => {
+  var ConferrenceName = req.body.ConferrenceName;
+  var data = "SELECT user.Title,user.Firstname,user.Lastname,user.Email,user.phoneNumber, memberconfer.conferenceID,memberconfer.conferenceName,paymentinfo.status FROM mydb.memberconfer INNER JOIN mydb.user ON memberconfer.email=user.email INNER JOIN mydb.paymentinfo ON memberconfer.email=paymentinfo.email WHERE memberconfer.conferenceName=?";
+  con.query(data,[ConferrenceName], function(err, result) {
+    if (err) throw err;
+    else {
+        console.log("request all data success");
+        res.end(JSON.stringify(result));
+        // res.status(200).json({data: result});
+    }
+  });
+});
 module.exports = router;

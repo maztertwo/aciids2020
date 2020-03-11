@@ -82,38 +82,6 @@ router.post("/insertmember", (req, res, next) => {
     });
 });
 
-// router.post('/c', (req, res, next) => {
-//     const url = req.protocol + '://' + req.get('host')
-//     var email = req.body.email;
-//     var profileImg = url + '/public/' + req.file.filename;
-//     var status = "in Process";
-//     var payment_Date = req.body.payment_Date;
-//     var payment_Time = req.body.payment_Time;
-//     var payment_Amount = req.body.payment_Amount;
-//     var UpdateUser =
-//         "UPDATE paymentinfo SET image=?,status=?,PayDate=?,PayTime=?,PayAmount=? WHERE email= ?";
-//     con.query(
-//         UpdateUser,
-//         [
-//             profileImg,
-//             status,
-//             payment_Date,
-//             payment_Time,
-//             payment_Amount,
-//             email,
-//         ],
-//         function (err, result) {
-//             if (err) throw err;
-//             else {
-//                 if (result != "") {
-//                     console.log(result.affectedRows + " record(s) updated");
-//                     res.end(JSON.stringify(result));
-//                 } else {
-//                     res.status(402).send("ERROR : Can't Update to DATABASE");
-//                 }
-//             }
-//         }
-//     );
-// })
+
 
 module.exports = router;

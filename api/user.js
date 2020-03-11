@@ -467,16 +467,6 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
     var payment_Time = req.body.payment_Time;
     var payment_Amount = req.body.payment_Amount;
     console.log(req.file);
-    // var data = [];
-    // data.push(test);
-    // var sql = "UPDATE paymentinfo SET VALUES ? WHERE email= ?";
-    // con.query(sql, [data], function(err, result) {
-    //   if (err) throw err;
-    //   console.log("upload Image Complete: ");
-    //   res
-    //     .status(200)
-    //     .send("Number of items inserted: " + result.affectedRows);
-    // });
     var UpdateUser =
     "UPDATE paymentinfo SET image=?,status=?,PayDate=?,PayTime=?,PayAmount=? WHERE email= ?";
   con.query(
@@ -543,5 +533,59 @@ router.get("/data/conferrence", (req, res) => {
       }
     }
   });
+});
+
+router.post("/data/conferrence", (req, res, next) => {
+  var ConferrenceName = req.body.ConferrenceName;
+  var ConferrenceNameCheck = "SELECT * FROM conferrence WHERE conferrenceName = ?";
+  con.query(ConferrenceNameCheck, [ConferrenceName], function(err, result) {
+    if (err) throw err;
+    else {
+      if (result != "") {
+        console.log("Get Data form: " + result[0].conferrenceName);
+        res.end(JSON.stringify(result));
+      } else {
+        res.status(402).send("ERROR WRONG ConferrenceName FROM DATABASE");
+      }
+    }
+  });
+});
+
+router.post("/conferrence/update", (req, res, next) => {
+  var ConferrenceID = req.body.ConferrenceID;
+  var ConferrenceName = req.body.ConferrenceName;
+  
+  var CreateDate = req.body.CreateDate;
+  var StartDate = req.body.StartDate;
+  var FinishDate = req.body.FinishDate;
+  var EarlyDeadline = req.body.EarlyDeadline;
+  var PaymentDeadline = req.body.PaymentDeadline;
+  var EarlyRegis = req.body.EarlyRegis;
+  var MemberEarly = req.body.MemberEarly;
+  var RegularLate = req.body.RegularLate;
+  var MemberLate = req.body.MemberLate;
+  var StudentLate = req.body.StudentLate;
+  var Visitor = req.body.Visitor;
+  var ExDinner = req.body.ExDinner;
+  var AdditionTicket = req.body.AdditionTicket;
+  var UpdateConferrence =
+    "UPDATE conferrence SET conferrenceName= ?,createDate= ?,startDate= ?,finishDate= ?,earlyDeadline=?,paymentDeadline=?,earlyRegis=?,memberEarly=?,regularLate=?,memberLate=?,studentLate=?,visitor=?,exDinner=?,additionTicket=? WHERE conferrenceID= ?";
+  con.query(
+    UpdateConferrence,
+    [
+       ConferrenceName, CreateDate, StartDate, FinishDate, EarlyDeadline, PaymentDeadline, EarlyRegis, MemberEarly, RegularLate, MemberLate, StudentLate, Visitor, ExDinner, AdditionTicket,ConferrenceID
+    ],
+    function(err, result) {
+      if (err) throw err;
+      else {
+        if (result != "") {
+          console.log(result.affectedRows + " record(s) updated");
+          res.end(JSON.stringify(result));
+        } else {
+          res.status(402).send("ERROR : Can't Update to DATABASE");
+        }
+      }
+    }
+  );
 });
 module.exports = router;

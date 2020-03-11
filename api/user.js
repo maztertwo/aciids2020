@@ -355,7 +355,7 @@ router.post("/login", (req, res) => {
 
 
 router.post("/conferrence", (req, res, next) => {
-  const time = new Date();
+  const time = new Date(Date.now());
   var email = req.body.email;
   var conferrenceName = req.body.conferrenceName;
   var startDate = req.body.startDate;
@@ -554,8 +554,7 @@ router.post("/data/conferrence", (req, res, next) => {
 router.post("/conferrence/update", (req, res, next) => {
   var ConferrenceID = req.body.ConferrenceID;
   var ConferrenceName = req.body.ConferrenceName;
-  
-  var CreateDate = req.body.CreateDate;
+  // var CreateDate = req.body.CreateDate;
   var StartDate = req.body.StartDate;
   var FinishDate = req.body.FinishDate;
   var EarlyDeadline = req.body.EarlyDeadline;
@@ -569,11 +568,11 @@ router.post("/conferrence/update", (req, res, next) => {
   var ExDinner = req.body.ExDinner;
   var AdditionTicket = req.body.AdditionTicket;
   var UpdateConferrence =
-    "UPDATE conferrence SET conferrenceName= ?,createDate= ?,startDate= ?,finishDate= ?,earlyDeadline=?,paymentDeadline=?,earlyRegis=?,memberEarly=?,regularLate=?,memberLate=?,studentLate=?,visitor=?,exDinner=?,additionTicket=? WHERE conferrenceID= ?";
+    "UPDATE conferrence SET conferrenceName= ?,startDate= ?,finishDate= ?,earlyDeadline=?,paymentDeadline=?,earlyRegis=?,memberEarly=?,regularLate=?,memberLate=?,studentLate=?,visitor=?,exDinner=?,additionTicket=? WHERE conferrenceID= ?";
   con.query(
     UpdateConferrence,
     [
-       ConferrenceName, CreateDate, StartDate, FinishDate, EarlyDeadline, PaymentDeadline, EarlyRegis, MemberEarly, RegularLate, MemberLate, StudentLate, Visitor, ExDinner, AdditionTicket,ConferrenceID
+       ConferrenceName, StartDate, FinishDate, EarlyDeadline, PaymentDeadline, EarlyRegis, MemberEarly, RegularLate, MemberLate, StudentLate, Visitor, ExDinner, AdditionTicket,ConferrenceID
     ],
     function(err, result) {
       if (err) throw err;

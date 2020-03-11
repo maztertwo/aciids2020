@@ -45,6 +45,23 @@ router.get("/getmember", (req, res) => {
     });
 });
 
+router.post("/getmember", (req, res, next) => {
+    var email = req.body.email;
+    console.log("email", email);
+    var emailCheck =
+      "SELECT * FROM memberconfer WHERE email = ?";
+    con.query(emailCheck, [email], function(err, result) {
+      if (err) throw err;
+      else {
+        if (result != "") {
+          console.log("Get Data form: " + result[0].email);
+          res.end(JSON.stringify(result));
+        } else {
+          res.status(402).send("ERROR WRONG email FROM DATABASE");
+        }
+      }
+    });
+  });
 router.post("/insertmember", (req, res, next) => {
     var email = req.body.email;
     var conferenceID = req.body.ConferrenceID;

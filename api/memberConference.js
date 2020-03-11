@@ -28,28 +28,28 @@ con.connect(err => {
     console.log("Database Connected!");
 });
 
-router.get("/getmember", (req, res) => {
-    var data = "SELECT * FROM memberconfer ;";
-    con.query(data, function (err, result) {
-        if (err) throw err;
-        else {
-            if (result != "") {
-                console.log("request all data success");
-                res.end(JSON.stringify(result));
-                // res.status(200).json({data: result});
-            } else {
-                console.log("fail to request all data ");
-                res.status(401);
-            }
-        }
-    });
-});
+// router.get("/getmember", (req, res) => {
+//     var data = "SELECT * FROM memberconfer ;";
+//     con.query(data, function (err, result) {
+//         if (err) throw err;
+//         else {
+//             if (result != "") {
+//                 console.log("request all data success");
+//                 res.end(JSON.stringify(result));
+//                 // res.status(200).json({data: result});
+//             } else {
+//                 console.log("fail to request all data ");
+//                 res.status(401);
+//             }
+//         }
+//     });
+// });
 
 router.post("/getmember", (req, res, next) => {
     var email = req.body.email;
     console.log("email", email);
     var emailCheck =
-      "SELECT * FROM memberconfer WHERE email = ?";
+      "SELECT conferrence.conferrenceID,conferrence.conferrenceName,conferrence.startDate,conferrence.finishDate,conferrence.paymentDeadline,paymentinfo.status FROM memberconfer INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID INNER JOIN paymentinfo ON memberconfer.email=paymentinfo.email WHERE memberconfer.email=?";
     con.query(emailCheck, [email], function(err, result) {
       if (err) throw err;
       else {

@@ -68,7 +68,7 @@ router.post("/database", (req, res, next) => {
   });
 
   router.post("/memberConfer", (req, res, next) => {
-    var sql = 'CREATE TABLE memberConfer (memberID int NOT NULL AUTO_INCREMENT,email VARCHAR(255),conferenceID VARCHAR(255),conferenceName VARCHAR(255),regisTime VARCHAR(255),ParticipationType VARCHAR(255),amountPaper INT,registrationType VARCHAR(255),PRIMARY KEY (memberID))';
+    var sql = 'CREATE TABLE memberConfer (memberID int NOT NULL AUTO_INCREMENT,email VARCHAR(255),conferenceID VARCHAR(255),conferenceName VARCHAR(255),status VARCHAR(255),regisTime VARCHAR(255),ParticipationType VARCHAR(255),amountPaper INT,registrationType VARCHAR(255),image VARCHAR(255),PayDate VARCHAR(255),PayTime VARCHAR(255),PayAmount VARCHAR(255),PRIMARY KEY (memberID))';
     con.query(sql, function(err, result) {
       if (err) throw err;
       console.log("Table 'memberConfer' created");

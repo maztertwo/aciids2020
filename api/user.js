@@ -308,6 +308,8 @@ router.post("/paymentinfo/update", (req, res, next) => {
 
   var UpdateStatus =
     "UPDATE paymentinfo SET status='Complete' WHERE Email= ?";
+    var UpdateStatus2 =
+    "UPDATE memberconfer SET status='Complete' WHERE Email= ?";  
   con.query(
     UpdateStatus,
     [
@@ -466,9 +468,10 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
     var payment_Date = req.body.payment_Date;
     var payment_Time = req.body.payment_Time;
     var payment_Amount = req.body.payment_Amount;
+    var conferenceName = req.body.conferenceName;
     console.log(req.file);
     var UpdateUser =
-    "UPDATE paymentinfo SET image=?,status=?,PayDate=?,PayTime=?,PayAmount=? WHERE email= ?";
+    "UPDATE memberconfer SET image=?,status=?,PayDate=?,PayTime=?,PayAmount=? WHERE email= ? AND conferenceName=?";
   con.query(
     UpdateUser,
     [
@@ -478,6 +481,7 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
       payment_Time,
       payment_Amount,
       email,
+      conferenceName,
     ],
     function(err, result) {
       if (err) throw err;
@@ -594,7 +598,7 @@ router.post("/conferrence/update", (req, res, next) => {
 
 router.post("/userDataConference", (req, res) => {
   var ConferrenceName = req.body.ConferrenceName;
-  var data = "SELECT user.Title,user.Firstname,user.Lastname,user.Email,user.phoneNumber, memberconfer.conferenceID,memberconfer.conferenceName,paymentinfo.status FROM mydb.memberconfer INNER JOIN mydb.user ON memberconfer.email=user.email INNER JOIN mydb.paymentinfo ON memberconfer.email=paymentinfo.email WHERE memberconfer.conferenceName=?";
+  var data = "SELECT user.Title,user.Firstname,user.Lastname,user.Email,user.phoneNumber, memberconfer.conferenceID,memberconfer.conferenceName,memberconfer.status FROM mydb.memberconfer INNER JOIN mydb.user ON memberconfer.email=user.email INNER JOIN mydb.paymentinfo ON memberconfer.email=paymentinfo.email WHERE memberconfer.conferenceName=?";
   con.query(data,[ConferrenceName], function(err, result) {
     if (err) throw err;
     else {

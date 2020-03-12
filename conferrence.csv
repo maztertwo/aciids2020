@@ -1,0 +1,5 @@
+conferrenceID,conferrenceName,createBy,createDate,startDate,finishDate,earlyDeadline,paymentDeadline,earlyRegis,memberEarly,regularLate,memberLate,studentLate,visitor,exDinner,additionTicket
+1,ACIIDS2077,naruto@konoha.com,2555-11-11,2020-03-11,2020-03-12,2020-03-12,2020-03-14,1,1,1,1,1,1,1,11
+2,"junin exam",naruto@konoha.com,2020-03-02,2020-03-02,2020-03-02,2020-03-02,2020-03-02,10,10,10,10,10,10,10,10
+3,"hokage exam",naruto@konoha.com,2020-03-02,2020-01-02,2020-02-02,2020-01-02,2020-01-02,24,12,37,52,47,86,34,96
+4,"Escape from COVID19",admin@gmail.com,2020-03-12,2020-03-12,2030-05-15,2020-03-13,2020-03-18,100,200,100,200,200,500,20,20

@@ -501,22 +501,6 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
   })
 });
 
-// router.get("/userDatatest", (req, res) => {
-//   var data = "SELECT paymentinfo.status,user.Title,user.Firstname,user.Lastname,user.Email,user.phoneNumber FROM user INNER JOIN paymentinfo ON paymentinfo.email=user.Email";
-//   con.query(data, function(err, result) {
-//     if (err) throw err;
-//     else {
-//       if (result != "") {
-//         console.log("request all data success");
-//         res.end(JSON.stringify(result));
-//         // res.status(200).json({data: result});
-//       } else {
-//         console.log("fail to request all data ");
-//         res.status(401);
-//       }
-//     }
-//   });
-// });
 
 router.get("/data/conferrence", (req, res) => {
   var data = "SELECT * FROM conferrence ;";
@@ -554,11 +538,6 @@ router.post("/data/conferrence", (req, res, next) => {
 router.post("/conferrence/update", (req, res, next) => {
   var ConferrenceID = req.body.ConferrenceID;
   var ConferrenceName = req.body.ConferrenceName;
-  // var CreateDate = req.body.CreateDate;
-  // var StartDate = req.body.StartDate;
-  // var FinishDate = req.body.FinishDate;
-  // var EarlyDeadline = req.body.EarlyDeadline;
-  // var PaymentDeadline = req.body.PaymentDeadline;
   var StartDate = req.body.startStr;
   var FinishDate = req.body.finStr;
   var EarlyDeadline = req.body.earlyStr;
@@ -599,6 +578,20 @@ router.post("/userDataConference", (req, res) => {
     if (err) throw err;
     else {
         console.log("request all data success");
+        res.end(JSON.stringify(result));
+        // res.status(200).json({data: result});
+    }
+  });
+});
+
+router.post("/userDataSummary", (req, res) => {
+  var ConferrenceName = req.body.ConferrenceName;
+  var email = req.body.email;
+  var data = "SELECT user.Email,memberconfer.ParticipationType,memberconfer.amountPaper,memberconfer.registrationType,conferrence.conferrenceID,conferrence.conferrenceName,conferrence.earlyRegis,conferrence.memberEarly,conferrence.regularLate,conferrence.memberLate,conferrence.studentLate,conferrence.visitor,conferrence.exDinner,conferrence.additionTicket FROM memberconfer INNER JOIN user ON memberconfer.email=memberconfer.email INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE user.email=?  AND conferrence.conferrenceName=?";
+  con.query(data,[email,ConferrenceName], function(err, result) {
+    if (err) throw err;
+    else {
+        console.log("request  data success");
         res.end(JSON.stringify(result));
         // res.status(200).json({data: result});
     }

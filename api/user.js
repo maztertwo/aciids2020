@@ -126,7 +126,6 @@ router.post("/user/resgister", (req, res, next) => {
 
   // var meemix = "aaa.@aaaa.com" << TEST BLANK SELECT FROM DATABASE
   var sql = "INSERT INTO user VALUES ?";
-  var sql2 = "INSERT INTO paymentinfo VALUES ?";
   var emailCheck = "SELECT * FROM user WHERE email = ?";
   con.query(emailCheck, [email], function (err, result) {
     if(err) throw err;
@@ -134,10 +133,6 @@ router.post("/user/resgister", (req, res, next) => {
       if(result == ""){
         con.query(sql, [data], function(err, result) {
           if (err) throw err;
-          con.query(sql2, [data2], function(err, result) {
-            if (err) throw err;
-            console.log("Insert payment Info complete");
-          });
           console.log("Number of records inserted: " + result.affectedRows);
           res.status(200).send("Number of records inserted: " + result.affectedRows);
         });
@@ -307,7 +302,6 @@ router.post("/paymentinfo/update", (req, res, next) => {
   var Status = req.body.Status;
   var conferenceName = req.body.conferrenceState;
   
-
   // var UpdateStatus =
   //   "UPDATE paymentinfo SET status='Complete' WHERE Email= ?";
     var UpdateStatus =
@@ -447,7 +441,7 @@ router.post("/item", (req, res, next) => {
   });
 });
 router.get('/user-profile', (req, res) => {
-  var data = "SELECT image FROM paymentinfo ;";
+  var data = "SELECT image FROM memberconfer ;";
   con.query(data, function(err, result) {
     if (err) throw err;
     else {

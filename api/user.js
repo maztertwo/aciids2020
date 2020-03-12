@@ -170,8 +170,9 @@ router.post("/users", (req, res, next) => {
 
 router.post("/paymentinfo", (req, res, next) => {
   var email = req.body.email;
-  var emailCheck = "SELECT * FROM paymentinfo WHERE email = ?";
-  con.query(emailCheck, [email], function(err, result) {
+  var conferenceName = req.body.conferenceName;
+  var emailCheck = "SELECT * FROM memberconfer WHERE email = ? AND conferenceName = ?";
+  con.query(emailCheck, [email,conferenceName], function(err, result) {
     if (err) throw err;
     else {
       if (result != "") {
@@ -304,17 +305,18 @@ router.post("/users/update", (req, res, next) => {
 router.post("/paymentinfo/update", (req, res, next) => {
   var Email = req.body.Email;
   var Status = req.body.Status;
+  var conferenceName = req.body.conferrenceState;
   
 
-  var UpdateStatus =
-    "UPDATE paymentinfo SET status='Complete' WHERE Email= ?";
-    var UpdateStatus2 =
-    "UPDATE memberconfer SET status='Complete' WHERE Email= ?";  
+  // var UpdateStatus =
+  //   "UPDATE paymentinfo SET status='Complete' WHERE Email= ?";
+    var UpdateStatus =
+    "UPDATE memberconfer SET status='Complete' WHERE Email= ? AND conferenceName = ?";  
   con.query(
     UpdateStatus,
     [
       Email,
-      Status,
+      conferenceName,
     ],
     function(err, result) {
       if (err) throw err;
@@ -505,22 +507,22 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
   })
 });
 
-router.get("/userDatatest", (req, res) => {
-  var data = "SELECT paymentinfo.status,user.Title,user.Firstname,user.Lastname,user.Email,user.phoneNumber FROM user INNER JOIN paymentinfo ON paymentinfo.email=user.Email";
-  con.query(data, function(err, result) {
-    if (err) throw err;
-    else {
-      if (result != "") {
-        console.log("request all data success");
-        res.end(JSON.stringify(result));
-        // res.status(200).json({data: result});
-      } else {
-        console.log("fail to request all data ");
-        res.status(401);
-      }
-    }
-  });
-});
+// router.get("/userDatatest", (req, res) => {
+//   var data = "SELECT paymentinfo.status,user.Title,user.Firstname,user.Lastname,user.Email,user.phoneNumber FROM user INNER JOIN paymentinfo ON paymentinfo.email=user.Email";
+//   con.query(data, function(err, result) {
+//     if (err) throw err;
+//     else {
+//       if (result != "") {
+//         console.log("request all data success");
+//         res.end(JSON.stringify(result));
+//         // res.status(200).json({data: result});
+//       } else {
+//         console.log("fail to request all data ");
+//         res.status(401);
+//       }
+//     }
+//   });
+// });
 
 router.get("/data/conferrence", (req, res) => {
   var data = "SELECT * FROM conferrence ;";
@@ -598,7 +600,7 @@ router.post("/conferrence/update", (req, res, next) => {
 
 router.post("/userDataConference", (req, res) => {
   var ConferrenceName = req.body.ConferrenceName;
-  var data = "SELECT user.Title,user.Firstname,user.Lastname,user.Email,user.phoneNumber, memberconfer.conferenceID,memberconfer.conferenceName,memberconfer.status FROM mydb.memberconfer INNER JOIN mydb.user ON memberconfer.email=user.email INNER JOIN mydb.paymentinfo ON memberconfer.email=paymentinfo.email WHERE memberconfer.conferenceName=?";
+  var data = "SELECT user.Title,user.Firstname,user.Lastname,user.Email,user.phoneNumber, memberconfer.conferenceID,memberconfer.conferenceName,memberconfer.status FROM mydb.memberconfer INNER JOIN mydb.user ON memberconfer.email=user.email WHERE memberconfer.conferenceName=?";
   con.query(data,[ConferrenceName], function(err, result) {
     if (err) throw err;
     else {

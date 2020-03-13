@@ -49,7 +49,7 @@ router.post("/getmember", (req, res, next) => {
     var email = req.body.email;
     console.log("email", email);
     var emailCheck =
-      "SELECT conferrence.conferrenceID,conferrence.conferrenceName,conferrence.startDate,conferrence.finishDate,conferrence.paymentDeadline,memberconfer.status FROM memberconfer INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE memberconfer.email=?";
+      "SELECT conferrence.conferrenceID,conferrence.conferrenceName,conferrence.startDate,conferrence.finishDate,conferrence.paymentDeadline,memberconfer.status FROM memberconfer INNER JOIN conferrence ON memberconfer.conferenceName=conferrence.conferrenceName WHERE memberconfer.email=?";
     con.query(emailCheck, [email], function(err, result) {
       if (err) throw err;
       else {

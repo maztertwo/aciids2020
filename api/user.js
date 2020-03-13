@@ -368,6 +368,7 @@ router.post("/conferrence", (req, res, next) => {
   var visitor = req.body.visitor;
   var exDinner = req.body.exDinner;
   var additionTicket = req.body.additionTicket;
+  var activeCon = "enable";
   var test = [
     ,
     conferrenceName,
@@ -384,7 +385,8 @@ router.post("/conferrence", (req, res, next) => {
     studentLate,
     visitor,
     exDinner,
-    additionTicket
+    additionTicket,
+    activeCon
   ];
   var data = [];
   data.push(test);
@@ -534,7 +536,44 @@ router.post("/data/conferrence", (req, res, next) => {
     }
   });
 });
-
+router.post("/conferrence/disableCon", (req, res, next) => {
+  var ConferrenceID = req.body.ConferrenceID;
+  var ActiveConferrence = "UPDATE conferrence SET activeConference = 'disable' WHERE conferrenceID=? "
+  con.query(
+    ActiveConferrence,
+    [ ConferrenceID],
+    function(err, result) {
+      if (err) throw err;
+      else {
+        if (result != "") {
+          console.log(result.affectedRows + " record(s) updated");
+          res.end(JSON.stringify(result));
+        } else {
+          res.status(402).send("ERROR : Can't Update to DATABASE");
+        }
+      }
+    }
+  );
+});
+router.post("/conferrence/enableCon", (req, res, next) => {
+  var ConferrenceID = req.body.ConferrenceID;
+  var ActiveConferrence = "UPDATE conferrence SET activeConference = 'enable' WHERE conferrenceID=? "
+  con.query(
+    ActiveConferrence,
+    [ ConferrenceID],
+    function(err, result) {
+      if (err) throw err;
+      else {
+        if (result != "") {
+          console.log(result.affectedRows + " record(s) updated");
+          res.end(JSON.stringify(result));
+        } else {
+          res.status(402).send("ERROR : Can't Update to DATABASE");
+        }
+      }
+    }
+  );
+});
 router.post("/conferrence/update", (req, res, next) => {
   var ConferrenceID = req.body.ConferrenceID;
   var ConferrenceName = req.body.ConferrenceName;

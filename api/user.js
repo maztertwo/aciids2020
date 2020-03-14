@@ -657,6 +657,18 @@ router.post("/userDataSummary", (req, res) => {
       });
     }
   })
-  
 });
+
+router.post("/deleteConference", (req, res, next) => {
+  const conferenceID = req.body.conferenceID;
+  var sql = "DELETE FROM conferrence WHERE conferrenceID=?";
+  con.query(sql, [conferenceID], function (err, result) {
+      if (err) throw err;
+      console.log("Delete" + result.affectedRows + "user");
+      res
+          .status(204)
+          .send("Delete: " + result.affectedRows);
+  });
+});
+
 module.exports = router;

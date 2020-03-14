@@ -166,18 +166,26 @@ router.post("/users", (req, res, next) => {
 router.post("/paymentinfo", (req, res, next) => {
   var email = req.body.email;
   var conferenceName = req.body.conferenceName;
-  var emailCheck = "SELECT * FROM memberconfer WHERE email = ? AND conferenceName = ?";
-  con.query(emailCheck, [email,conferenceName], function(err, result) {
+  var searchCon = "SELECT conferrenceID,conferrenceName FROM conferrence WHERE conferrenceName =? ";
+  var emailCheck = "SELECT * FROM memberconfer WHERE email = ? AND conferenceID = ?";
+  con.query(searchCon, [conferenceName], function(err, result) {
     if (err) throw err;
-    else {
-      if (result != "") {
-        console.log("Get Data form: " + result[0].email);
-        res.end(JSON.stringify(result));
-      } else {
-        res.status(402).send("ERROR WRONG EMAIL FROM DATABASE");
-      }
+    else{
+      const conferrenceID = result[0].conferrenceID
+      con.query(emailCheck, [email,conferrenceID], function(err, result) {
+        if (err) throw err;
+        else {
+          if (result != "") {
+            console.log("Get Data form: " + result[0].email);
+            res.end(JSON.stringify(result));
+          } else {
+            res.status(402).send("ERROR WRONG EMAIL FROM DATABASE");
+          }
+        }
+      });
     }
-  });
+  })
+  
 });
 
 router.get("/data", (req, res) => {
@@ -633,14 +641,22 @@ router.post("/userDataConference", (req, res) => {
 router.post("/userDataSummary", (req, res) => {
   var ConferrenceName = req.body.ConferrenceName;
   var email = req.body.email;
-  var data = "SELECT user.Email,memberconfer.ParticipationType,memberconfer.amountPaper,memberconfer.registrationType,conferrence.conferrenceID,conferrence.conferrenceName,conferrence.earlyRegis,conferrence.memberEarly,conferrence.regularLate,conferrence.memberLate,conferrence.studentLate,conferrence.visitor,conferrence.exDinner,conferrence.additionTicket FROM memberconfer INNER JOIN user ON memberconfer.email=memberconfer.email INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE user.email=?  AND conferrence.conferrenceName=?";
-  con.query(data,[email,ConferrenceName], function(err, result) {
+  var searchCon = "SELECT conferrenceID,conferrenceName FROM conferrence WHERE conferrenceName =? ";
+  var data = "SELECT user.Email,memberconfer.ParticipationType,memberconfer.amountPaper,memberconfer.registrationType,conferrence.conferrenceID,conferrence.conferrenceName,conferrence.earlyRegis,conferrence.memberEarly,conferrence.regularLate,conferrence.memberLate,conferrence.studentLate,conferrence.visitor,conferrence.exDinner,conferrence.additionTicket FROM memberconfer INNER JOIN user ON memberconfer.email=memberconfer.email INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE user.email=?  AND conferrence.conferrenceID=?";
+  con.query(searchCon,[ConferrenceName], function(err, result) {
     if (err) throw err;
-    else {
-        console.log("request  data success");
-        res.end(JSON.stringify(result));
-        // res.status(200).json({data: result});
+    else{
+      const conferrenceID = result[0].conferrenceID;
+      con.query(data,[email,conferrenceID], function(err, result) {
+        if (err) throw err;
+        else {
+            console.log("request  data success");
+            res.end(JSON.stringify(result));
+            // res.status(200).json({data: result});
+        }
+      });
     }
-  });
+  })
+  
 });
 module.exports = router;

@@ -88,9 +88,9 @@ router.post("/insertmember", (req, res, next) => {
     });
 });
 
-router.delete("/deletemember", (req, res, next) => {
-  const conferenceID = req.body.data.conferenceID;
-  const email = req.body.data.Email;
+router.post("/deletemember", (req, res, next) => {
+  const conferenceID = req.body.conferenceID;
+  const email = req.body.Email;
   console.log(conferenceID ,"AND",email );
   // var sql = "INSERT INTO memberconfer VALUES ?";
   var sql = "DELETE FROM memberconfer WHERE email=? AND conferenceID=?";

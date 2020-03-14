@@ -513,7 +513,7 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
 
 
 router.get("/data/conferrence", (req, res) => {
-  var data = "SELECT * FROM conferrence ;";
+  var data = "SELECT * FROM conferrence WHERE activeConference ='enable' ;";
   con.query(data, function(err, result) {
     if (err) throw err;
     else {

@@ -564,11 +564,13 @@ router.post("/conferrence/disableCon", (req, res, next) => {
   );
 });
 router.post("/conferrence/enableCon", (req, res, next) => {
-  var ConferrenceID = req.body.ConferrenceID;
-  var ActiveConferrence = "UPDATE conferrence SET activeConference = 'enable' WHERE conferrenceID=? "
+  var ConferrenceID = req.body.conferrenceID;
+  var status = req.body.activeConference;
+  console.log(ConferrenceID)
+  var ActiveConferrence = "UPDATE conferrence SET activeConference = ? WHERE conferrenceID=? "
   con.query(
     ActiveConferrence,
-    [ ConferrenceID],
+    [status, ConferrenceID],
     function(err, result) {
       if (err) throw err;
       else {

@@ -88,6 +88,19 @@ router.post("/insertmember", (req, res, next) => {
     });
 });
 
-
+router.delete("/deletemember", (req, res, next) => {
+  const conferenceID = req.body.data.conferenceID;
+  const email = req.body.data.Email;
+  console.log(conferenceID ,"AND",email );
+  // var sql = "INSERT INTO memberconfer VALUES ?";
+  var sql = "DELETE FROM memberconfer WHERE email=? AND conferenceID=?";
+  con.query(sql, [email,conferenceID], function (err, result) {
+      if (err) throw err;
+      console.log("Delete" + result.affectedRows + "user");
+      res
+          .status(200)
+          .send("Number of items inserted: " + result.affectedRows);
+  });
+});
 
 module.exports = router;

@@ -216,7 +216,7 @@ router.post("/data/conferrence", (req, res, next) => {
 });
 
 router.get("/data/conferrence/name", (req, res) => {
-  var data = "SELECT conferrenceName FROM conferrence ;";
+  var data = "SELECT conferrenceName,conferrenceID FROM conferrence ;";
   con.query(data, function(err, result) {
     if (err) throw err;
     else {
@@ -612,13 +612,20 @@ router.post("/conferrence/update", (req, res, next) => {
 
 router.post("/userDataConference", (req, res) => {
   var ConferrenceName = req.body.ConferrenceName;
-  var data = "SELECT user.Title,user.Firstname,user.Lastname,user.Email,user.phoneNumber, memberconfer.conferenceID,memberconfer.conferenceName,memberconfer.status FROM mydb.memberconfer INNER JOIN mydb.user ON memberconfer.email=user.email WHERE memberconfer.conferenceName=?";
-  con.query(data,[ConferrenceName], function(err, result) {
+  var searchCon = "SELECT conferrenceID,conferrenceName FROM conferrence WHERE conferrenceName =? ";
+  var data = "SELECT user.Title,user.Firstname,user.Lastname,user.Email,user.phoneNumber, memberconfer.conferenceID,memberconfer.conferenceName,memberconfer.status FROM mydb.memberconfer INNER JOIN mydb.user ON memberconfer.email=user.email WHERE memberconfer.conferenceID=?";
+  con.query(searchCon,[ConferrenceName], function(err, result) {
     if (err) throw err;
-    else {
-        console.log("request all data success");
-        res.end(JSON.stringify(result));
-        // res.status(200).json({data: result});
+    else{
+      const conferrenceID = result[0].conferrenceID
+      con.query(data,[conferrenceID], function(err, result) {
+        if (err) throw err;
+        else {
+            console.log("request all data success");
+            res.end(JSON.stringify(result));
+            // res.status(200).json({data: result});
+        }
+      });
     }
   });
 });

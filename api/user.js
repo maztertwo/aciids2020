@@ -529,6 +529,23 @@ router.get("/data/conferrence", (req, res) => {
   });
 });
 
+router.get("/data/conferrencefororganizer", (req, res) => {
+  var data = "SELECT * FROM conferrence ;";
+  con.query(data, function(err, result) {
+    if (err) throw err;
+    else {
+      if (result != "") {
+        console.log("request all data success");
+        res.end(JSON.stringify(result));
+        // res.status(200).json({data: result});
+      } else {
+        console.log("fail to request all data ");
+        res.status(401);
+      }
+    }
+  });
+});
+
 router.post("/data/conferrence", (req, res, next) => {
   var ConferrenceName = req.body.ConferrenceName;
   var ConferrenceNameCheck = "SELECT * FROM conferrence WHERE conferrenceName = ?";

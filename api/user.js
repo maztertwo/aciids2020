@@ -333,6 +333,34 @@ router.post("/paymentinfo/update", (req, res, next) => {
     }
   );
 });
+router.post("/user/resetpass", (req, res, next) => {
+  var Email = req.body.Email;
+  var Phone = req.body.Phone;
+  var Password = req.body.Password;
+  var ResetPass =
+    "UPDATE user SET password=? WHERE Email= ? AND phoneNumber = ?";  
+  con.query(
+    ResetPass,
+    [
+      Password,
+      Email,
+      Phone,
+     
+    ],
+    function(err, result) {
+      if (err) throw err;
+      else {
+        if (result != "") {
+          console.log(result.affectedRows + " Reset Password Complete");
+          res.end(JSON.stringify(result));
+        } else {
+          res.status(402).send("ERROR : Can't Reset Password to DATABASE");
+        }
+      }
+    }
+  );
+});
+
 
 router.post("/login", (req, res) => {
   var email = req.body.email;

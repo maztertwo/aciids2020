@@ -60,16 +60,6 @@ router.get("/", (req, res, next) => {
   });
 });
 
-router.post("/insert", (req, res, next) => {
-  var data = [["John", "Highway 47"]];
-  var sql = "INSERT INTO user (name, address) VALUES ?";
-  con.query(sql, [data], function(err, result) {
-    if (err) throw err;
-    console.log("Number of records inserted: " + result.affectedRows);
-    res.send("Number of records inserted: " + result.affectedRows);
-  });
-});
-
 router.post("/user/resgister", (req, res, next) => {
   var profileImg = "";
   var status = "in Process";
@@ -334,31 +324,49 @@ router.post("/paymentinfo/update", (req, res, next) => {
   );
 });
 router.post("/user/resetpass", (req, res, next) => {
-  var Email = req.body.Email;
-  var Phone = req.body.Phone;
-  var Password = req.body.Password;
+  var Email = req.body.email;
+  var Phone = req.body.phone;
+  var Password = req.body.password;
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(Password, salt);  // Genarate Hash Password
+  var checkEmail = "SELECT * FROM user WHERE Email= ?";
   var ResetPass =
     "UPDATE user SET password=? WHERE Email= ? AND phoneNumber = ?";  
-  con.query(
-    ResetPass,
-    [
-      Password,
-      Email,
-      Phone,
-     
-    ],
-    function(err, result) {
-      if (err) throw err;
-      else {
-        if (result != "") {
-          console.log(result.affectedRows + " Reset Password Complete");
-          res.end(JSON.stringify(result));
-        } else {
-          res.status(402).send("ERROR : Can't Reset Password to DATABASE");
-        }
+    con.query(checkEmail,[Email],function(err, result){
+      if(err) throw err;
+      if (result == ""){
+        res.status(402).send("ERROR : Wrong Email");
       }
-    }
-  );
+      else{
+        if(result[0].phoneNumber != Phone){
+          res.status(403).send("ERROR : Your Phone number not match with this email");
+        }
+        else{
+          con.query(
+            ResetPass,
+            [
+              hash,
+              Email,
+              Phone,
+            ],
+            function(err, result) {
+              if (err) throw err;
+              else {
+                if (result != "") {
+                  console.log(result.affectedRows + " Reset Password Complete");
+                  res.end(JSON.stringify(result));
+                } else {
+                  res.status(404).send("ERROR : Can't Reset Password to DATABASE");
+                }
+              }
+            }
+          );
+          // res.status(200).send(result[0]);
+        }
+        // console.log(result);
+      }
+    })
+  
 });
 
 

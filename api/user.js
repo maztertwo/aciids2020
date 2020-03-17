@@ -701,6 +701,7 @@ router.post("/userDataSummary", (req, res) => {
   con.query(searchCon,[ConferrenceName], function(err, result) {
     if (err) throw err;
     else{
+      if(result != ""){
       const conferrenceID = result[0].conferrenceID;
       con.query(data,[email,conferrenceID], function(err, result) {
         if (err) throw err;
@@ -710,6 +711,7 @@ router.post("/userDataSummary", (req, res) => {
             // res.status(200).json({data: result});
         }
       });
+    }
     }
   })
 });

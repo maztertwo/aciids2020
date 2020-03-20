@@ -297,31 +297,25 @@ router.post("/users/update", (req, res, next) => {
 });
 router.post("/paymentinfo/update", (req, res, next) => {
   var Email = req.body.Email;
-  var Status = req.body.Status;
   var conferenceName = req.body.conferrenceState;
-  
-  // var UpdateStatus =
-  //   "UPDATE paymentinfo SET status='Complete' WHERE Email= ?";
-    var UpdateStatus =
-    "UPDATE memberconfer SET status='Complete' WHERE Email= ? AND conferenceName = ?";  
-  con.query(
-    UpdateStatus,
-    [
-      Email,
-      conferenceName,
-    ],
-    function(err, result) {
-      if (err) throw err;
-      else {
-        if (result != "") {
-          console.log(result.affectedRows + " Status updated");
-          res.end(JSON.stringify(result));
-        } else {
-          res.status(402).send("ERROR : Can't Update to DATABASE");
-        }
-      }
-    }
-  );
+  var status = req.body.Status;
+  if(status =="In Process"){var UpdateStatus ="UPDATE memberconfer SET status='Complete' WHERE Email= ? AND conferenceName = ?";}
+  else{var UpdateStatus ="UPDATE memberconfer SET status='In Process' WHERE Email= ? AND conferenceName = ?";}
+        con.query(UpdateStatus,[
+            Email,
+            conferenceName,
+          ],
+          function(err, result) {
+            if (err) throw err;
+            else {
+              if (result != "") {
+                console.log(result.affectedRows + " Status updated");
+                // res.status(200).send("Wny ERROR DUDE !!??")
+              } else {
+                // res.status(402).send("ERROR : Can't Update to DATABASE");
+              }
+            }
+          });
 });
 router.post("/user/resetpass", (req, res, next) => {
   var Email = req.body.email;

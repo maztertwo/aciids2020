@@ -49,23 +49,23 @@ router.post("/database", (req, res, next) => {
     });
   });
 
-  router.post("/itemtable", (req, res, next) => {
-    var sql = 'CREATE TABLE itemConfer (itemID int NOT NULL AUTO_INCREMENT,conferrenceID INT,itemName VARCHAR(255),Price int,PRIMARY KEY (itemID))';
-    con.query(sql, function(err, result) {
-      if (err) throw err;
-      console.log("Table 'itemConfer' created");
-      res.send("Table 'itemConfer' created");
-    });
-  });
+  // router.post("/itemtable", (req, res, next) => {
+  //   var sql = 'CREATE TABLE itemConfer (itemID int NOT NULL AUTO_INCREMENT,conferrenceID INT,itemName VARCHAR(255),Price int,PRIMARY KEY (itemID))';
+  //   con.query(sql, function(err, result) {
+  //     if (err) throw err;
+  //     console.log("Table 'itemConfer' created");
+  //     res.send("Table 'itemConfer' created");
+  //   });
+  // });
 
-  router.post("/paymentinfo", (req, res, next) => {
-    var sql = 'CREATE TABLE paymentinfo (infoID int NOT NULL AUTO_INCREMENT,email VARCHAR(255),image VARCHAR(255),status VARCHAR(255),PayDate VARCHAR(255),PayTime VARCHAR(255),PayAmount VARCHAR(255),PRIMARY KEY (infoID))';
-    con.query(sql, function(err, result) {
-      if (err) throw err;
-      console.log("Table 'paymentinfo' created");
-      res.send("Table 'paymentinfo' created");
-    });
-  });
+  // router.post("/paymentinfo", (req, res, next) => {
+  //   var sql = 'CREATE TABLE paymentinfo (infoID int NOT NULL AUTO_INCREMENT,email VARCHAR(255),image VARCHAR(255),status VARCHAR(255),PayDate VARCHAR(255),PayTime VARCHAR(255),PayAmount VARCHAR(255),PRIMARY KEY (infoID))';
+  //   con.query(sql, function(err, result) {
+  //     if (err) throw err;
+  //     console.log("Table 'paymentinfo' created");
+  //     res.send("Table 'paymentinfo' created");
+  //   });
+  // });
 
   router.post("/memberConfer", (req, res, next) => {
     var sql = 'CREATE TABLE memberConfer (memberID int NOT NULL AUTO_INCREMENT,email VARCHAR(255),conferenceID VARCHAR(255),conferenceName VARCHAR(255),status VARCHAR(255),regisTime VARCHAR(255),ParticipationType VARCHAR(255),amountPaper INT,registrationType VARCHAR(255),image VARCHAR(255),PayDate VARCHAR(255),PayTime VARCHAR(255),PayAmount VARCHAR(255),PRIMARY KEY (memberID))';

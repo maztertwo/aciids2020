@@ -29,6 +29,8 @@ con.connect(err => {
 });
 
 router.post("/pay", (req, res, next) => {
+    const email = req.query.email;
+    console.log(email);
     const create_payment_json = {
         "intent": "sale",
         "payer": {

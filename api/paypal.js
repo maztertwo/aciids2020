@@ -29,7 +29,7 @@ con.connect(err => {
 });
 
 router.post("/pay", (req, res, next) => {
-    const email = req.query.email;
+    const email = req.body.email;
     console.log(email);
     const create_payment_json = {
         "intent": "sale",
@@ -64,7 +64,8 @@ router.post("/pay", (req, res, next) => {
         } else {
             for(let i = 0;i < payment.links.length;i++){
                 if(payment.links[i].rel === 'approval_url'){
-                    res.redirect(payment.links[i].href);
+                    // res.redirect(payment.links[i].href);
+                    res.send(payment.links[i].href);
                 }
             }
             // console.log("Create Payment Response");
@@ -101,7 +102,7 @@ router.get('/success',(req,res)=> {
 })
 
 router.get('/cancel', function(req,res) {
-res.send("Cancelled...")
+    res.redirect("http://localhost:8080/attendee/payments");
 } )
 
 module.exports = router;

@@ -30,49 +30,85 @@ con.connect(err => {
 
 router.post("/pay", (req, res, next) => {
     const email = req.body.email;
-    console.log(email);
-    const create_payment_json = {
-        "intent": "sale",
-        "payer": {
-            "payment_method": "paypal"
-        },
-        "redirect_urls": {
-            "return_url": "http://localhost:5000/paypal/success",
-            "cancel_url": "http://localhost:5000/paypal/cancel"
-        },
-        "transactions": [{
-            "item_list": {
-                "items": [{
-                    "name": "Member Registation", // Can pull from data base
-                    "sku": "001",
-                    "price": "1.00",
-                    "currency": "USD",
-                    "quantity": 1
+    // console.log(email);
+    var data =
+      "SELECT * FROM memberconfer WHERE email =? ";
+    con.query(data, [email], function(err, result) {
+      if (err) throw err;
+      else {
+        if (result != "") {
+            const create_payment_json = {
+                "intent": "sale",
+                "payer": {
+                    "payment_method": "paypal"
+                },
+                "redirect_urls": {
+                    "return_url": "http://localhost:5000/paypal/success",
+                    "cancel_url": "http://localhost:5000/paypal/cancel"
+                },
+                "transactions": [{
+                    "item_list": {
+                        "items": [{
+                            "name": result[0].registrationType, // Can pull from data base
+                            "sku": "001",
+                            "price": "1.00",
+                            "currency": "USD",
+                            "quantity": 1
+                        }]
+                    },
+                    "amount": {
+                        "currency": "USD",
+                        "total": "1.00"
+                    },
+                    "description": "Shut up and give me Money."
                 }]
-            },
-            "amount": {
-                "currency": "USD",
-                "total": "1.00"
-            },
-            "description": "Shut up and give me Money."
-        }]
-    };
-    
-    paypal.payment.create(create_payment_json, function (error, payment) {
-        if (error) {
-            throw error;
-        } else {
-            for(let i = 0;i < payment.links.length;i++){
-                if(payment.links[i].rel === 'approval_url'){
-                    // res.redirect(payment.links[i].href);
-                    res.send(payment.links[i].href);
+            };
+            paypal.payment.create(create_payment_json, function (error, payment) {
+                if (error) {
+                    throw error;
+                } else {
+                    for(let i = 0;i < payment.links.length;i++){
+                        if(payment.links[i].rel === 'approval_url'){
+                            // res.redirect(payment.links[i].href);
+                            res.send(payment.links[i].href);
+                        }
+                    }
+                    // console.log("Create Payment Response");
+                    // console.log(payment);
+                    // res.send("Success")
                 }
-            }
-            // console.log("Create Payment Response");
-            // console.log(payment);
-            // res.send("Success")
+            });
+        } else {
+          res.status(402).send("ERROR WRONG email FROM DATABASE");
         }
+      }
     });
+    // const create_payment_json = {
+    //     "intent": "sale",
+    //     "payer": {
+    //         "payment_method": "paypal"
+    //     },
+    //     "redirect_urls": {
+    //         "return_url": "http://localhost:5000/paypal/success",
+    //         "cancel_url": "http://localhost:5000/paypal/cancel"
+    //     },
+    //     "transactions": [{
+    //         "item_list": {
+    //             "items": [{
+    //                 "name": "Member Registation", // Can pull from data base
+    //                 "sku": "001",
+    //                 "price": "1.00",
+    //                 "currency": "USD",
+    //                 "quantity": 1
+    //             }]
+    //         },
+    //         "amount": {
+    //             "currency": "USD",
+    //             "total": "1.00"
+    //         },
+    //         "description": "Shut up and give me Money."
+    //     }]
+    // };
   }); 
 
 router.get('/success',(req,res)=> {

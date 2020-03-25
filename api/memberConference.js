@@ -25,7 +25,7 @@ var con = mysql.createConnection({
 // DATABASE CONNECTION
 con.connect(err => {
     if (err) throw err;
-    console.log("Database Connected!");
+    console.log("Database member Connected!");
 });
 
 

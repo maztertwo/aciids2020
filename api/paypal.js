@@ -43,7 +43,7 @@ router.post("/pay", (req, res, next) => {
                     "payment_method": "paypal"
                 },
                 "redirect_urls": {
-                    "return_url": "http://localhost:5000/paypal/success",
+                    "return_url": `http://localhost:5000/paypal/success?email=${email}`,
                     "cancel_url": "http://localhost:5000/paypal/cancel"
                 },
                 "transactions": [{
@@ -112,6 +112,7 @@ router.post("/pay", (req, res, next) => {
   }); 
 
 router.get('/success',(req,res)=> {
+    const email = req.query.email;
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
 
@@ -124,6 +125,19 @@ router.get('/success',(req,res)=> {
             }
         }]
     }
+    var UpdateUser =
+    "UPDATE memberconfer SET status='Complete' WHERE email= ?";
+  con.query(
+    UpdateUser,
+    [
+      email,
+    ],
+    function(err, result) {
+      if (err) throw err;
+      else {
+      }
+    }
+  );
     paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
         if (error) {
             console.log(error.response);

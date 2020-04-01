@@ -674,15 +674,19 @@ router.post("/userDataConference", (req, res) => {
   con.query(searchCon,[ConferrenceName], function(err, result) {
     if (err) throw err;
     else{
-      const conferrenceID = result[0].conferrenceID
-      con.query(data,[conferrenceID], function(err, result) {
-        if (err) throw err;
-        else {
-            console.log("request all data success");
-            res.end(JSON.stringify(result));
-            // res.status(200).json({data: result});
-        }
-      });
+      if (result != "") {
+        const conferrenceID = result[0].conferrenceID
+        con.query(data,[conferrenceID], function(err, result) {
+          if (err) throw err;
+          else {
+              console.log("request all data success");
+              res.end(JSON.stringify(result));
+              // res.status(200).json({data: result});
+          }
+        });
+      } else {
+        res.status(402).send("ERROR WRONG ConferrenceName FROM DATABASE");
+      }
     }
   });
 });

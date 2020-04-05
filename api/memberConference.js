@@ -56,11 +56,13 @@ router.post("/insertmember", (req, res, next) => {
     var ParticipationType = req.body.ParticipationType;
     var amountPaper = req.body.amountPaper;
     var registrationType = req.body.registrationType;
+    var extraTicket = req.body.ExtraTicket;
+    var extraDinner = req.body.ExtraDinner;
     var image = "";
     var PayDate = "";
     var PayTime = "";
     var PayAmount = "";
-    var test = [, email, conferenceID,conferenceName,status, regisTime, ParticipationType, amountPaper, registrationType,image,PayDate,PayTime,PayAmount];
+    var test = [, email, conferenceID,conferenceName,status, regisTime, ParticipationType, amountPaper, registrationType,extraTicket,extraDinner,image,PayDate,PayTime,PayAmount];
     var data = [];
     data.push(test);
     var sql = "INSERT INTO memberconfer VALUES ?";

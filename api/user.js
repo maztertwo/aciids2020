@@ -695,7 +695,7 @@ router.post("/userDataSummary", (req, res) => {
   var ConferrenceName = req.body.ConferrenceName;
   var email = req.body.email;
   var searchCon = "SELECT conferrenceID,conferrenceName FROM conferrence WHERE conferrenceName =? ";
-  var data = "SELECT user.Email,memberconfer.ParticipationType,memberconfer.amountPaper,memberconfer.registrationType,conferrence.conferrenceID,conferrence.conferrenceName,conferrence.earlyRegis,conferrence.memberEarly,conferrence.regularLate,conferrence.memberLate,conferrence.studentLate,conferrence.visitor,conferrence.exDinner,conferrence.additionTicket FROM memberconfer INNER JOIN user ON memberconfer.email=memberconfer.email INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE user.email=?  AND conferrence.conferrenceID=?";
+  var data = "SELECT user.Email,memberconfer.ParticipationType,memberconfer.amountPaper,memberconfer.registrationType,memberconfer.extraTicket,memberconfer.extraDinner,conferrence.conferrenceID,conferrence.conferrenceName,conferrence.earlyRegis,conferrence.memberEarly,conferrence.regularLate,conferrence.memberLate,conferrence.studentLate,conferrence.visitor,conferrence.exDinner,conferrence.additionTicket FROM memberconfer INNER JOIN user ON memberconfer.email=memberconfer.email INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE user.email=?  AND conferrence.conferrenceID=?";
   con.query(searchCon,[ConferrenceName], function(err, result) {
     if (err) throw err;
     else{
@@ -709,6 +709,9 @@ router.post("/userDataSummary", (req, res) => {
             // res.status(200).json({data: result});
         }
       });
+    }
+    else{
+      res.status(404).send("Data doesn't Exist");
     }
     }
   })

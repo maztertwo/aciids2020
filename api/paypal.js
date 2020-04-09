@@ -32,18 +32,40 @@ router.post("/pay", (req, res, next) => {
     const email = req.body.email;
     // console.log(email);
     var data =
-      "SELECT * FROM memberconfer WHERE email =? ";
-    con.query(data, [email], function(err, result) {
+      "SELECT user.Email,memberconfer.ParticipationType,memberconfer.amountPaper,memberconfer.registrationType,memberconfer.extraTicket,memberconfer.extraDinner,conferrence.conferrenceID,conferrence.conferrenceName,conferrence.earlyRegis,conferrence.memberEarly,conferrence.regularLate,conferrence.memberLate,conferrence.studentLate,conferrence.visitor,conferrence.exDinner,conferrence.additionTicket FROM memberconfer INNER JOIN user ON memberconfer.email=memberconfer.email INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE user.email=?  AND conferrence.conferrenceID=? ";
+    con.query(data, [email,2], function(err, result) {
       if (err) throw err;
       else {
         if (result != "") {
+            if (result[0].registrationType === "Early Registration") {
+                mainPrice = result[0].earlyRegis;
+              }
+              else if (result[0].registrationType === "Member Late registration") {
+                mainPrice = result[0].memberEarly;
+              }
+              else if (result[0].registrationType === "Late registration") {
+                mainPrice = result[0].regularLate;
+              }
+              else if (result[0].registrationType === "member registration") {
+                mainPrice = result[0].memberLate;
+              }
+              else if (result[0].registrationType === "Student Late") {
+                mainPrice = result[0].studentLate;
+              }
+              else if (result[0].registrationType === "Visitor") {
+                mainPrice = result[0].visitor;
+              }
+              else {
+                mainPrice = 1000;
+              }
+            const price = mainPrice + (result[0].extraTicket * result[0].additionTicket) + (result[0].extraDinner * result[0].exDinner);
             const create_payment_json = {
                 "intent": "sale",
                 "payer": {
                     "payment_method": "paypal"
                 },
                 "redirect_urls": {
-                    "return_url": `http://localhost:5000/paypal/success?email=${email}`,
+                    "return_url": `http://localhost:5000/paypal/success?email=${email}&price=${price}`,
                     "cancel_url": "http://localhost:5000/paypal/cancel"
                 },
                 "transactions": [{
@@ -51,14 +73,14 @@ router.post("/pay", (req, res, next) => {
                         "items": [{
                             "name": result[0].registrationType, // Can pull from data base
                             "sku": "001",
-                            "price": "1.00",
+                            "price": price,
                             "currency": "USD",
                             "quantity": 1
                         }]
                     },
                     "amount": {
                         "currency": "USD",
-                        "total": "1.00"
+                        "total": price
                     },
                     "description": "Shut up and give me Money."
                 }]
@@ -115,13 +137,14 @@ router.get('/success',(req,res)=> {
     const email = req.query.email;
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
+    const price = req.query.price;
 
     const execute_payment_json = {
         "payer_id": payerId,
         "transactions": [{
             "amount":{
                 "currency": "USD",
-                "total": "1.00"
+                "total": price
             }
         }]
     }

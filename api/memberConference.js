@@ -39,7 +39,7 @@ router.post("/getmember", (req, res, next) => {
       if (err) throw err;
       else {
         if (result != "") {
-          console.log("Get Data form: " + result[0].email);
+          console.log("Get Data form: " + email);
           res.end(JSON.stringify(result));
         } else {
           res.status(402).send("ERROR WRONG email FROM DATABASE");

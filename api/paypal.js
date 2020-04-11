@@ -30,10 +30,11 @@ con.connect(err => {
 
 router.post("/pay", (req, res, next) => {
     const email = req.body.email;
+    const conferrence = req.body.conferrenceState;
     // console.log(email);
     var data =
-      "SELECT user.Email,memberconfer.ParticipationType,memberconfer.amountPaper,memberconfer.registrationType,memberconfer.extraTicket,memberconfer.extraDinner,conferrence.conferrenceID,conferrence.conferrenceName,conferrence.earlyRegis,conferrence.memberEarly,conferrence.regularLate,conferrence.memberLate,conferrence.studentLate,conferrence.visitor,conferrence.exDinner,conferrence.additionTicket FROM memberconfer INNER JOIN user ON memberconfer.email=memberconfer.email INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE user.email=?  AND conferrence.conferrenceID=? ";
-    con.query(data, [email,2], function(err, result) {
+      "SELECT user.Email,memberconfer.ParticipationType,memberconfer.amountPaper,memberconfer.registrationType,memberconfer.extraTicket,memberconfer.extraDinner,conferrence.conferrenceID,conferrence.conferrenceName,conferrence.earlyRegis,conferrence.memberEarly,conferrence.regularLate,conferrence.memberLate,conferrence.studentLate,conferrence.visitor,conferrence.exDinner,conferrence.additionTicket FROM memberconfer INNER JOIN user ON memberconfer.email=memberconfer.email INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE user.email=?  AND conferrence.conferrenceName=? ";
+    con.query(data, [email,conferrence], function(err, result) {
       if (err) throw err;
       else {
         if (result != "") {
@@ -58,7 +59,7 @@ router.post("/pay", (req, res, next) => {
               else {
                 mainPrice = 1000;
               }
-            const price = mainPrice + (result[0].extraTicket * result[0].additionTicket) + (result[0].extraDinner * result[0].exDinner);
+            const price = (mainPrice * result[0].amountPaper) + (result[0].extraTicket * result[0].additionTicket) + (result[0].extraDinner * result[0].exDinner);
             const create_payment_json = {
                 "intent": "sale",
                 "payer": {
@@ -82,7 +83,7 @@ router.post("/pay", (req, res, next) => {
                         "currency": "USD",
                         "total": price
                     },
-                    "description": "Shut up and give me Money."
+                    "description": `Pay for conference : ${conferrence}`
                 }]
             };
             paypal.payment.create(create_payment_json, function (error, payment) {

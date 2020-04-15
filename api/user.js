@@ -74,6 +74,9 @@ router.post("/user/resgister", (req, res, next) => {
   const hash = bcrypt.hashSync(password, salt);  // Genarate Hash Password
   var firstName = req.body.firstName;
   var middleName = req.body.middleName;
+  if(middleName == "-"){
+    middleName = "";
+  }
   var lastName = req.body.lastName;
   var ParticipationType = req.body.registrationType;
   var numberPapers = req.body.numberPapers;

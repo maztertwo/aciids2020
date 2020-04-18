@@ -10,6 +10,7 @@ const bodyParser = require("body-parser");
 const uuidv4 = require('uuid/v4');
 const path = require("path");
 const fs = require('fs');
+const csvParser = require('csv-parse');
 const DIR = './public/';
 
 //------------------------------- FUNCTION UPLOAD IMAGE -------------------------------------------
@@ -697,8 +698,9 @@ router.post("/userDataConference", (req, res) => {
 router.post("/userDataSummary", (req, res) => {
   var ConferrenceName = req.body.ConferrenceName;
   var email = req.body.email;
+  console.log("email :", email);
   var searchCon = "SELECT conferrenceID,conferrenceName FROM conferrence WHERE conferrenceName =? ";
-  var data = "SELECT user.Email,memberconfer.ParticipationType,memberconfer.amountPaper,memberconfer.registrationType,memberconfer.extraTicket,memberconfer.extraDinner,conferrence.conferrenceID,conferrence.conferrenceName,conferrence.earlyRegis,conferrence.memberEarly,conferrence.regularLate,conferrence.memberLate,conferrence.studentLate,conferrence.visitor,conferrence.exDinner,conferrence.additionTicket FROM memberconfer INNER JOIN user ON memberconfer.email=memberconfer.email INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE user.email=?  AND conferrence.conferrenceID=?";
+  var data = "SELECT user.Email,memberconfer.ParticipationType,memberconfer.amountPaper,memberconfer.registrationType,memberconfer.extraTicket,memberconfer.extraDinner,conferrence.conferrenceID,conferrence.conferrenceName,conferrence.earlyRegis,conferrence.memberEarly,conferrence.regularLate,conferrence.memberLate,conferrence.studentLate,conferrence.visitor,conferrence.exDinner,conferrence.additionTicket FROM memberconfer INNER JOIN user ON memberconfer.email=user.email INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE user.email=?  AND conferrence.conferrenceID=?";
   con.query(searchCon,[ConferrenceName], function(err, result) {
     if (err) throw err;
     else{
@@ -729,6 +731,29 @@ router.post("/deleteConference", (req, res, next) => {
       res
           .status(204)
           .send("Delete: " + result.affectedRows);
+  });
+});
+
+router.post("/uploadCSVmember", (req, res, next) => {
+  const csvData = req.body.csvData;
+  console.log("CSV DATA :",csvData);
+  fs.readFile("C:/Users/Maztertwo/Desktop/conference.csv", {
+    encoding: 'utf-8'
+  }, function(err, csvData) {
+    if (err) {
+      console.log(err);
+    }
+  
+    csvParser(csvData, {
+      delimiter: ','
+    }, function(err, data) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(data);
+        res.send(data[1]);
+      }
+    });
   });
 });
 

@@ -1,5 +1,0 @@
-infoID,email,image,status,PayDate,PayTime,PayAmount
-2,thawin9218@gmail.com,http://localhost:5000/public/3d63e195-cae3-4396-94b6-ccd7fc81e8fd-images.jfif,"In Process",11/03/2020,23.25,124
-3,naruto@konoha.com,http://localhost:5000/public/41c7c1a6-1461-4c23-b0c0-9296e35df1c4-img.png,"In Process",05/03/2020,14.40,550
-4,thanakiat.two@gmail.com,http://localhost:5000/public/247bb663-b7e3-4ce4-a8e6-8ec69fa9187e-images.jfif,"In Process",11/01/2020,25:59,15000
-6,kid@gmail.com,,"in Process",,,

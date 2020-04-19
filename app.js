@@ -4,19 +4,15 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-
-
 const User = require('./api/user');
 const createTable = require('./api/createTable');
 const memberCon = require('./api/memberConference');
 const paymentPaypal = require('./api/paypal');
 
-
 app.use(morgan('dev'));
 app.use(cors())
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-
 
 // Security for browser
 app.use((req,res,next)=> {

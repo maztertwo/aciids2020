@@ -147,6 +147,7 @@ router.get('/success',(req,res)=> {
     const paymentId = req.query.paymentId;
     const price = req.query.price;
     const conference = req.query.conferrence;
+    var time = new Date();
 
     const execute_payment_json = {
         "payer_id": payerId,
@@ -158,10 +159,11 @@ router.get('/success',(req,res)=> {
         }]
     }
     var UpdateUser =
-    "UPDATE memberconfer SET status='Complete',payMethod='Paypal' WHERE email= ? AND conferenceID=?";
+    "UPDATE memberconfer SET status='Complete',payMethod='Paypal',PayTime=? WHERE email= ? AND conferenceID=?";
   con.query(
     UpdateUser,
     [
+      time,
       email,
       conference,
     ],

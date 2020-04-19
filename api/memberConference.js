@@ -34,7 +34,7 @@ router.post("/getmember", (req, res, next) => {
     var email = req.body.email;
     console.log("email", email);
     var emailCheck =
-      "SELECT conferrence.conferrenceID,conferrence.conferrenceName,conferrence.startDate,conferrence.finishDate,conferrence.paymentDeadline,memberconfer.status FROM memberconfer INNER JOIN conferrence ON memberconfer.conferenceName=conferrence.conferrenceName WHERE memberconfer.email=?";
+      "SELECT conferrence.conferrenceID,conferrence.conferrenceName,conferrence.startDate,conferrence.finishDate,conferrence.paymentDeadline,memberconfer.status,memberconfer.payMethod,memberconfer.memberID FROM memberconfer INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE memberconfer.email=?";
     con.query(emailCheck, [email], function(err, result) {
       if (err) throw err;
       else {
@@ -51,7 +51,8 @@ router.post("/insertmember", (req, res, next) => {
     var email = req.body.email;
     var conferenceID = req.body.ConferrenceID;
     var conferenceName = req.body.ConferrenceName;
-    var status = "In Process"
+    var status = "None"
+    var payMethod = "None"
     var regisTime = new Date(Date.now());
     var ParticipationType = req.body.ParticipationType;
     var amountPaper = req.body.amountPaper;
@@ -62,7 +63,7 @@ router.post("/insertmember", (req, res, next) => {
     var PayDate = "";
     var PayTime = "";
     var PayAmount = "";
-    var test = [, email, conferenceID,conferenceName,status, regisTime, ParticipationType, amountPaper, registrationType,extraTicket,extraDinner,image,PayDate,PayTime,PayAmount];
+    var test = [, email, conferenceID,conferenceName,status,payMethod, regisTime, ParticipationType, amountPaper, registrationType,extraTicket,extraDinner,image,PayDate,PayTime,PayAmount];
     var data = [];
     data.push(test);
     var sql = "INSERT INTO memberconfer VALUES ?";

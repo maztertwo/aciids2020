@@ -303,24 +303,31 @@ router.post("/paymentinfo/update", (req, res, next) => {
   var Email = req.body.Email;
   var conferenceName = req.body.conferrenceState;
   var status = req.body.Status;
-  if(status =="In Process"){var UpdateStatus ="UPDATE memberconfer SET status='Complete' WHERE Email= ? AND conferenceName = ?";}
-  else{var UpdateStatus ="UPDATE memberconfer SET status='In Process' WHERE Email= ? AND conferenceName = ?";}
-        con.query(UpdateStatus,[
-            Email,
-            conferenceName,
-          ],
-          function(err, result) {
-            if (err) throw err;
-            else {
-              if (result != "") {
-                console.log(result.affectedRows + " Status updated");
-                // res.status(200).send("Wny ERROR DUDE !!??")
-              } else {
-                // res.status(402).send("ERROR : Can't Update to DATABASE");
-              }
-            }
-          });
-});
+  var searchCon = "SELECT conferrenceID,conferrenceName FROM conferrence WHERE conferrenceName =? ";
+  con.query(searchCon, [conferenceName], function(err, result) {
+    if (err) throw err;
+    else{
+      const conferrenceID = result[0].conferrenceID
+      if(status =="In Process"){var UpdateStatus ="UPDATE memberconfer SET status='Complete' WHERE Email= ? AND conferenceID = ?";}
+      else{var UpdateStatus ="UPDATE memberconfer SET status='In Process' WHERE Email= ? AND conferenceID = ?";}
+            con.query(UpdateStatus,[
+                Email,
+                conferrenceID,
+              ],
+              function(err, result) {
+                if (err) throw err;
+                else {
+                  if (result != "") {
+                    console.log(result.affectedRows + " Status updated");
+                    // res.status(200).send("Wny ERROR DUDE !!??")
+                  } else {
+                    // res.status(402).send("ERROR : Can't Update to DATABASE");
+                  }
+                }
+              });
+        }})
+      });
+
 router.post("/user/resetpass", (req, res, next) => {
   var Email = req.body.email;
   var Phone = req.body.phone;
@@ -505,23 +512,30 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
     var email = req.body.email;
     var profileImg = url + '/public/' + req.file.filename;
     var status = "in Process";
+    var payMethod = "Bank Transfer";
     var payment_Date = req.body.payment_Date;
     var payment_Time = req.body.payment_Time;
     var payment_Amount = req.body.payment_Amount;
     var conferenceName = req.body.conferenceName;
     console.log(req.file);
     var UpdateUser =
-    "UPDATE memberconfer SET image=?,status=?,PayDate=?,PayTime=?,PayAmount=? WHERE email= ? AND conferenceName=?";
+    "UPDATE memberconfer SET image=?,status=?,payMethod=?,PayDate=?,PayTime=?,PayAmount=? WHERE email= ? AND conferenceID=?";
+    var searchCon = "SELECT conferrenceID,conferrenceName FROM conferrence WHERE conferrenceName =? ";
+    con.query(searchCon, [conferenceName], function(err, result) {
+      if (err) throw err;
+      else{
+        const conferrenceID = result[0].conferrenceID
   con.query(
     UpdateUser,
     [
       profileImg,
       status,
+      payMethod,
       payment_Date,
       payment_Time,
       payment_Amount,
       email,
-      conferenceName,
+      conferrenceID,
     ],
     function(err, result) {
       if (err) throw err;
@@ -535,6 +549,7 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
       }
     }
   );
+      }});
   })
 
   router.get('/public/:imagename', (req,res) =>{

@@ -33,8 +33,13 @@ router.post("/pay", (req, res, next) => {
     const conferrence = req.body.conferrenceState;
     // console.log(email);
     var data =
-      "SELECT user.Email,memberconfer.ParticipationType,memberconfer.amountPaper,memberconfer.registrationType,memberconfer.extraTicket,memberconfer.extraDinner,conferrence.conferrenceID,conferrence.conferrenceName,conferrence.earlyRegis,conferrence.memberEarly,conferrence.regularLate,conferrence.memberLate,conferrence.studentLate,conferrence.visitor,conferrence.exDinner,conferrence.additionTicket FROM memberconfer INNER JOIN user ON memberconfer.email=user.email INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE user.email=?  AND conferrence.conferrenceName=? ";
-    con.query(data, [email,conferrence], function(err, result) {
+      "SELECT user.Email,memberconfer.ParticipationType,memberconfer.amountPaper,memberconfer.registrationType,memberconfer.extraTicket,memberconfer.extraDinner,conferrence.conferrenceID,conferrence.conferrenceName,conferrence.earlyRegis,conferrence.memberEarly,conferrence.regularLate,conferrence.memberLate,conferrence.studentLate,conferrence.visitor,conferrence.exDinner,conferrence.additionTicket FROM memberconfer INNER JOIN user ON memberconfer.email=user.email INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE user.email=?  AND conferrence.conferrenceID=? ";
+      var searchCon = "SELECT conferrenceID,conferrenceName FROM conferrence WHERE conferrenceName =? ";
+    con.query(searchCon, [conferrence], function(err, result) {
+      if (err) throw err;
+      else{
+        const conferrenceID = result[0].conferrenceID
+    con.query(data, [email,conferrenceID], function(err, result) {
       if (err) throw err;
       else {
         if (result != "") {
@@ -66,7 +71,7 @@ router.post("/pay", (req, res, next) => {
                     "payment_method": "paypal"
                 },
                 "redirect_urls": {
-                    "return_url": `http://localhost:5000/paypal/success?email=${email}&price=${price}`,
+                    "return_url": `http://localhost:5000/paypal/success?email=${email}&price=${price}&conferrence=${conferrenceID}`,
                     "cancel_url": "http://localhost:5000/paypal/cancel"
                 },
                 "transactions": [{
@@ -105,7 +110,9 @@ router.post("/pay", (req, res, next) => {
           res.status(402).send("ERROR WRONG email FROM DATABASE");
         }
       }
+    
     });
+  }});
     // const create_payment_json = {
     //     "intent": "sale",
     //     "payer": {
@@ -139,6 +146,7 @@ router.get('/success',(req,res)=> {
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
     const price = req.query.price;
+    const conference = req.query.conferrence;
 
     const execute_payment_json = {
         "payer_id": payerId,
@@ -150,11 +158,12 @@ router.get('/success',(req,res)=> {
         }]
     }
     var UpdateUser =
-    "UPDATE memberconfer SET status='Complete' WHERE email= ?";
+    "UPDATE memberconfer SET status='Complete',payMethod='Paypal' WHERE email= ? AND conferenceID=?";
   con.query(
     UpdateUser,
     [
       email,
+      conference,
     ],
     function(err, result) {
       if (err) throw err;

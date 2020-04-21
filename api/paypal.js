@@ -159,13 +159,14 @@ router.get('/success',(req,res)=> {
         }]
     }
     var UpdateUser =
-    "UPDATE memberconfer SET status='Complete',payMethod='Paypal',PayTime=? WHERE email= ? AND conferenceID=?";
+    "UPDATE memberconfer SET status='Complete',payMethod='Paypal',PayTime=?,PayAmount=? WHERE email= ? AND conferenceID=?";
   con.query(
     UpdateUser,
     [
       time,
       email,
       conference,
+      price,
     ],
     function(err, result) {
       if (err) throw err;

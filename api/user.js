@@ -62,11 +62,6 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/user/resgister", (req, res, next) => {
-  var profileImg = "";
-  var status = "in Process";
-  var payment_Date = "";
-  var payment_Time = "";
-  var payment_Amount = "";
   var role = "attendee";
   const time = new Date();
   var email = req.body.email;
@@ -79,9 +74,6 @@ router.post("/user/resgister", (req, res, next) => {
     middleName = "";
   }
   var lastName = req.body.lastName;
-  var ParticipationType = req.body.registrationType;
-  var numberPapers = req.body.numberPapers;
-  var RegistrationType = req.body.feeType;
   var title = req.body.title;
   var affiliation = req.body.affiliation;
   var address1 = req.body.address1;
@@ -100,23 +92,9 @@ router.post("/user/resgister", (req, res, next) => {
   var invoiceState = req.body.invoiceState;
   var invoiceCountry = req.body.invoiceCountry;
   var invoicePostcode = req.body.invoicePostcode;
-  var reserveBanquet = req.body.reserveBanquet;
-  var reserveTour = req.body.reserveTour;
-  var test = [,title,firstName,middleName,lastName,email,hash,role,ParticipationType,RegistrationType,numberPapers,affiliation,address1,address2,city,state,country,postcode,phone,fax,invoiceName,invoiceVatID,invoiceAddress1,invoiceAddress2,invoiceCity,invoiceState,invoiceCountry,invoicePostcode,reserveBanquet,reserveTour,time];
+  var test = [,title,firstName,middleName,lastName,email,hash,role,affiliation,address1,address2,city,state,country,postcode,phone,fax,invoiceName,invoiceVatID,invoiceAddress1,invoiceAddress2,invoiceCity,invoiceState,invoiceCountry,invoicePostcode,time];
   var data = [];
   data.push(test);
-
-  var test2 = [
-    ,
-    email,
-    profileImg,
-    status,
-    payment_Date,
-    payment_Time,
-    payment_Amount
-  ];
-  var data2 = [];
-  data2.push(test2);
 
   // var meemix = "aaa.@aaaa.com" << TEST BLANK SELECT FROM DATABASE
   var sql = "INSERT INTO user VALUES ?";
@@ -303,6 +281,9 @@ router.post("/paymentinfo/update", (req, res, next) => {
   var Email = req.body.Email;
   var conferenceName = req.body.conferrenceState;
   var status = req.body.Status;
+  // console.log("Email" ,Email);
+  // console.log("conferenceName" ,conferenceName);
+  // console.log("status" ,status);
   var searchCon = "SELECT conferrenceID,conferrenceName FROM conferrence WHERE conferrenceName =? ";
   con.query(searchCon, [conferenceName], function(err, result) {
     if (err) throw err;

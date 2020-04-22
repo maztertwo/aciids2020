@@ -80,12 +80,12 @@ router.post("/pay", (req, res, next) => {
                             "name": result[0].registrationType, // Can pull from data base
                             "sku": "001",
                             "price": price,
-                            "currency": "USD",
+                            "currency": "EUR",
                             "quantity": 1
                         }]
                     },
                     "amount": {
-                        "currency": "USD",
+                        "currency": "EUR",
                         "total": price
                     },
                     "description": `Pay for conference : ${conferrence}`
@@ -153,7 +153,7 @@ router.get('/success',(req,res)=> {
         "payer_id": payerId,
         "transactions": [{
             "amount":{
-                "currency": "USD",
+                "currency": "EUR",
                 "total": price
             }
         }]
@@ -181,7 +181,7 @@ router.get('/success',(req,res)=> {
         } else {
             console.log("Get Payment Response");
             console.log(JSON.stringify(payment));
-            res.redirect("http://localhost:8080/attendee/payments");
+            res.redirect("http://localhost:8080/attendee/paymentsummary");
         }
     });
 

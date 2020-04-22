@@ -306,7 +306,7 @@ router.post("/paymentinfo/update", (req, res, next) => {
     if (err) throw err;
     else{
       const conferrenceID = result[0].conferrenceID
-      if(status =="In Process"){var UpdateStatus ="UPDATE memberconfer SET status='Complete' WHERE Email= ? AND conferenceID = ?";}
+      if(status ==="In Process"){var UpdateStatus ="UPDATE memberconfer SET status='Complete' WHERE Email= ? AND conferenceID = ?";}
       else{var UpdateStatus ="UPDATE memberconfer SET status='In Process' WHERE Email= ? AND conferenceID = ?";}
             con.query(UpdateStatus,[
                 Email,
@@ -509,7 +509,7 @@ router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
   const url = req.protocol + '://' + req.get('host')
     var email = req.body.email;
     var profileImg = url + '/public/' + req.file.filename;
-    var status = "in Process";
+    var status = "In Process";
     var payMethod = "Bank Transfer";
     var payment_Date = req.body.payment_Date;
     var payment_Time = req.body.payment_Time;

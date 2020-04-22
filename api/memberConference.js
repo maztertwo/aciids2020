@@ -180,7 +180,7 @@ router.post("/csvtest", (req, res, next) => {
             console.log("Number of records inserted: " + result.affectedRows);
           });
         } else {
-          console.log("Your Email is already Used");
+          console.log(`This email ${email} is already Used`);
         }
       }
     });

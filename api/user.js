@@ -212,6 +212,23 @@ router.get("/data/conferrence/name", (req, res) => {
   });
 });
 
+router.get("/data/conferrence/attendee", (req, res) => {
+  var data = "SELECT conferrenceName,conferrenceID FROM conferrence WHERE activeConference='enable' ;";
+  con.query(data, function(err, result) {
+    if (err) throw err;
+    else {
+      if (result != "") {
+        console.log("request all data success");
+        res.end(JSON.stringify(result));
+        // res.status(200).json({data: result});
+      } else {
+        console.log("fail to request all data ");
+        res.status(401);
+      }
+    }
+  });
+});
+
 router.post("/users/update", (req, res, next) => {
   var email = req.body.email;
   var firstName = req.body.firstName;

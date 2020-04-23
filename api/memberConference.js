@@ -81,11 +81,18 @@ router.post("/insertmember", (req, res, next) => {
   ];
   var data = [];
   data.push(test);
+  var searchSame = "SELECT * FROM memberconfer WHERE email =? ";
   var sql = "INSERT INTO memberconfer VALUES ?";
-  con.query(sql, [data], function (err, result) {
+  con.query(searchSame, [email], function (err, result) {
     if (err) throw err;
-    console.log("Number of items inserted: " + result.affectedRows);
-    res.status(200).send("Number of items inserted: " + result.affectedRows);
+    if (result != ""){ res.status(400).send("this email already register") }
+    else{
+    con.query(sql, [data], function (err, result) {
+      if (err) throw err;
+      console.log("Number of items inserted: " + result.affectedRows);
+      res.status(200).send("Number of items inserted: " + result.affectedRows);
+    });
+  }
   });
 });
 

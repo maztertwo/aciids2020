@@ -442,10 +442,19 @@ router.post("/conferrence", (req, res, next) => {
   var sql = "INSERT INTO conferrence VALUES ?";
   var priorityCheck =
     "SELECT * FROM user WHERE role = 'organizer' AND Email= ?";
+    var checkName =
+    "SELECT * FROM conferrence WHERE conferrenceName=?";
   con.query(priorityCheck, [email], function(err, result) {
     if (err) throw err;
     else {
       if (result != "") {
+        con.query(checkName, [conferrenceName], function(err, result) {
+          if (err) throw err;
+          if(result != "")
+          {
+            res.status(401).send("This conference is already used");
+          }
+          else{
         con.query(sql, [data], function(err, result) {
           if (err) throw err;
           console.log("Number of conferrence inserted: " + result.affectedRows);
@@ -453,6 +462,9 @@ router.post("/conferrence", (req, res, next) => {
             .status(200)
             .send("Number of conferrence inserted: " + result.affectedRows);
         });
+        }})
+
+
       } else {
         res.status(400).send("No Permission");
       }

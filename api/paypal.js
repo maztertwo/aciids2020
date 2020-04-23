@@ -128,12 +128,12 @@ router.post("/pay", (req, res, next) => {
     //                 "name": "Member Registation", // Can pull from data base
     //                 "sku": "001",
     //                 "price": "1.00",
-    //                 "currency": "USD",
+    //                 "currency": "EUR",
     //                 "quantity": 1
     //             }]
     //         },
     //         "amount": {
-    //             "currency": "USD",
+    //             "currency": "EUR",
     //             "total": "1.00"
     //         },
     //         "description": "Shut up and give me Money."
@@ -164,13 +164,14 @@ router.get('/success',(req,res)=> {
     UpdateUser,
     [
       time,
+      price,
       email,
       conference,
-      price,
     ],
     function(err, result) {
       if (err) throw err;
       else {
+        //console.log("result from paypal :",result);
       }
     }
   );

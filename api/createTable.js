@@ -46,12 +46,28 @@ router.post("/database", (req, res, next) => {
   });
 
   router.post("/memberConfer", (req, res, next) => {
-    var sql = 'CREATE TABLE memberConfer (memberID int NOT NULL AUTO_INCREMENT,email VARCHAR(255),conferenceID VARCHAR(255),conferenceName VARCHAR(255),status VARCHAR(255),payMethod VARCHAR(255),regisTime VARCHAR(255),ParticipationType VARCHAR(255),amountPaper INT,registrationType VARCHAR(255),extraTicket int,extraDinner int,image VARCHAR(255),PayDate VARCHAR(255),PayTime VARCHAR(255),PayAmount VARCHAR(255),PRIMARY KEY (memberID))';
+    var sql = 'CREATE TABLE memberConfer (memberID int NOT NULL AUTO_INCREMENT,email VARCHAR(255),easychairID VARCHAR(255),conferenceID VARCHAR(255),conferenceName VARCHAR(255),status VARCHAR(255),payMethod VARCHAR(255),regisTime VARCHAR(255),ParticipationType VARCHAR(255),amountPaper INT,registrationType VARCHAR(255),extraTicket int,extraDinner int,image VARCHAR(255),PayDate VARCHAR(255),PayTime VARCHAR(255),PayAmount VARCHAR(255),PRIMARY KEY (memberID))';
     con.query(sql, function(err, result) {
       if (err) throw err;
       console.log("Table 'memberConfer' created");
       res.send("Table 'memberConfer' created");
     });
+  });
+
+  router.post("/createGod", (req, res, next) => {
+    const email = req.body.email;
+    const key = req.body.key;
+
+    if(key=="a1c2i1i2d3s122012201"){
+    var sql = 'UPDATE user SET role="organizer" WHERE Email= ?';
+    con.query(sql,[email], function(err, result) {
+      if (err) throw err;
+      console.log(`Organizer has been created`+ email);
+      res.send(`Organizer has been created`+ email);
+    });
+  }else{console.log("Someone try to be admin");
+  res.status(404).send("Someone try to be admin");
+  }
   });
 
 module.exports = router;

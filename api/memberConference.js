@@ -61,9 +61,11 @@ router.post("/insertmember", (req, res, next) => {
   var PayDate = "";
   var PayTime = "";
   var PayAmount = "";
+  var easychairID = req.body.easychairID;
   var test = [
     ,
     email,
+    easychairID,
     conferenceID,
     conferenceName,
     status,

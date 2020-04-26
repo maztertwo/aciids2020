@@ -229,6 +229,33 @@ router.get("/data/conferrence/attendee", (req, res) => {
   });
 });
 
+router.post("/conferMemberUnit", (req, res, next) => {
+  var ConferrenceName = req.body.ConferrenceName;
+  // console.log("conferrenceName", ConferrenceName);
+  var conferrenceNameCheck =
+    "SELECT conferrenceID FROM conferrence WHERE conferrenceName = ?";
+    var countMember =
+    "SELECT * FROM memberconfer WHERE conferenceID = ?";
+  con.query(conferrenceNameCheck, [ConferrenceName], function(err, result) {
+    if (err) throw err;
+    else {
+      if (result != "") {
+        console.log(result[0].conferrenceID)
+        con.query(countMember, [result[0].conferrenceID], function(err, result) {
+          if (err) throw err;
+          else{
+            res.status(200).send(result.length)
+            console.log(result.length + " Status updated")
+          }
+        })
+        // res.end(JSON.stringify(result));
+      } else {
+        res.status(402).send("ERROR WRONG conferrenceName FROM DATABASE");
+      }
+    }
+  });
+});
+
 router.post("/users/update", (req, res, next) => {
   var email = req.body.email;
   var firstName = req.body.firstName;

@@ -747,6 +747,37 @@ router.post("/userDataSummary", (req, res) => {
   })
 });
 
+router.post("/getReceipt", (req, res) => {
+  var ConferrenceName = req.body.ConferrenceName;
+  var email = req.body.email;
+  console.log("email :", email);
+  var searchCon = "SELECT conferrenceID,conferrenceName FROM conferrence WHERE conferrenceName =? ";
+  var data = "SELECT user.Email,memberconfer.status,memberconfer.ParticipationType,memberconfer.amountPaper,memberconfer.registrationType,memberconfer.extraTicket,memberconfer.extraDinner,conferrence.conferrenceID,conferrence.conferrenceName,conferrence.earlyRegis,conferrence.memberEarly,conferrence.regularLate,conferrence.memberLate,conferrence.studentLate,conferrence.visitor,conferrence.exDinner,conferrence.additionTicket FROM memberconfer INNER JOIN user ON memberconfer.email=user.email INNER JOIN conferrence ON memberconfer.conferenceID=conferrence.conferrenceID WHERE user.email=?  AND conferrence.conferrenceID=?";
+  con.query(searchCon,[ConferrenceName], function(err, result) {
+    if (err) throw err;
+    else{
+      if(result != ""){
+      const conferrenceID = result[0].conferrenceID;
+      con.query(data,[email,conferrenceID], function(err, result) {
+        if (err) throw err;
+        if(result[0].status != "Complete")
+        {
+          res.status(401).send("Your payment is not complete. Please complete your payment at payment page (if you pay with 'Bank Tranfers' please wait for admin to confirm your payment.)");
+        }
+        else {
+            console.log("request  data success");
+            res.end(JSON.stringify(result));
+            // res.status(200).json({data: result});
+        }
+      });
+    }
+    else{
+      res.status(404).send("Data doesn't Exist");
+    }
+    }
+  })
+});
+
 router.post("/deleteConference", (req, res, next) => {
   const conferenceID = req.body.conferenceID;
   var sql = "DELETE FROM conferrence WHERE conferrenceID=?";
